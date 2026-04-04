@@ -46,3 +46,10 @@ resource "databricks_account_network_policy" "this" {
     databricks_mws_ncc_binding.this
   ]
 }
+
+# ネットワークポリシーをワークスペースにバインド
+resource "databricks_workspace_network_option" "this" {
+  provider          = databricks.account
+  workspace_id      = local.workspace_id
+  network_policy_id = databricks_account_network_policy.this.network_policy_id
+}
