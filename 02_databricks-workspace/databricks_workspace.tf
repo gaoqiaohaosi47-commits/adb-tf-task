@@ -1,6 +1,7 @@
 resource "azurerm_databricks_workspace" "dp_workspace" {
   name                                  = "${local.prefix}-dp-workspace"
   resource_group_name                   = var.resource_group_name
+  managed_resource_group_name           = "${local.prefix}-dp-workspace-mrg"
   location                              = var.location
   sku                                   = "premium"
   tags                                  = local.tags
