@@ -1,0 +1,47 @@
+# terraform.tfvars
+
+databricks_account_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# 001: グループ
+uc_group_name       = "uc-users"
+ws_admin_group_name = "ws-admins"
+
+# 003: サービスプリンシパル
+service_principal_display_name = "tf-automation-sp"
+
+# 005: SQL ウェアハウス
+sql_warehouse_name = "analytics-warehouse"
+
+# 006: IPアクセスリスト
+ip_access_list = [
+  { label = "office-1", address = "8.8.8.8" },
+  { label = "office-2", address = "8.8.4.4" }
+]
+
+# 008: メタストア
+metastore_name = "my-metastore"
+
+# 011: カタログ
+catalog_name = "analytics_catalog"
+
+# 012: スキーマ
+schema_names = ["bronze", "silver", "gold"]
+
+# 013: ボリューム
+volume_name   = "raw_data"
+volume_schema = "bronze"
+
+# 015: ネットワークポリシー
+network_policy_enforcement_mode = "DRY_RUN"
+
+allowed_internet_destinations = [
+  # 必要に応じて追加
+  # {
+  #   destination              = "pypi.org"
+  #   internet_destination_type = "DNS_NAME"
+  # },
+  # {
+  #   destination              = "github.com"
+  #   internet_destination_type = "DNS_NAME"
+  # }
+]
