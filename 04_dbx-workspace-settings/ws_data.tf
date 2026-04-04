@@ -1,8 +1,10 @@
 #--------------------------------------------------------------
 # 既存メタストア参照
+# ※ metastore_name が指定されている場合のみ読み込む
 #--------------------------------------------------------------
 data "databricks_metastore" "this" {
-  provider = databricks.workspace
+  count    = var.metastore_name != "" ? 1 : 0
+  provider = databricks.account
   name     = var.metastore_name
 }
 

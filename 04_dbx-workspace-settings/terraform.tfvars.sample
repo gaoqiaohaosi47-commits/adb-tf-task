@@ -42,7 +42,10 @@ ip_access_list = [
 ]
 
 # --- 008: メタストア ---
-metastore_name = "my-metastore"
+# ※ Unity Catalog が有効な場合はメタストア名を指定してください
+# ※ 設定しない場合（空文字列）、メタストア権限設定はスキップされます
+metastore_name = ""
+# metastore_name = "my-metastore"
 
 # --- 011: カタログ ---
 catalog_name = "analytics_catalog"

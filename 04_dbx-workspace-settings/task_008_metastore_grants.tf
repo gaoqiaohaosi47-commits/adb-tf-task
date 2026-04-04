@@ -3,8 +3,9 @@
 #==============================================================
 
 resource "databricks_grants" "metastore" {
+  count     = var.metastore_name != "" ? 1 : 0
   provider  = databricks.workspace
-  metastore = data.databricks_metastore.this.id
+  metastore = data.databricks_metastore.this[0].id
 
   grant {
     principal = databricks_group.uc_users.display_name

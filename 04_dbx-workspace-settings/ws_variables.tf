@@ -116,7 +116,8 @@ variable "ip_access_list" {
 #--------------------------------------------------------------
 variable "metastore_name" {
   type        = string
-  description = "既存の Unity Catalog メタストア名"
+  description = "既存の Unity Catalog メタストア名（指定が空の場合、メタストア設定はスキップ）"
+  default     = ""
 }
 
 #--------------------------------------------------------------
