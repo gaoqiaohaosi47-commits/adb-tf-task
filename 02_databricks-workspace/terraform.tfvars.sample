@@ -1,0 +1,27 @@
+#############################################
+# 基本設定（新規の Data Plane RG を作成）
+#############################################
+
+# リージョン（例：Japan East）
+# location = "japaneast"
+location = "eastus"
+
+# Data Plane VNet のアドレス空間（この /16 はモジュール内で /22 に細分化されます）
+#   - public: cidrsubnet(var.cidr_dp, 6, 0)  → /22
+#   - private: cidrsubnet(var.cidr_dp, 6, 1) → /22
+#   - privatelink: cidrsubnet(var.cidr_dp, 6, 2) → /22
+cidr_dp = "10.10.0.0/16"
+
+# Data Plane 用 RG は Terraform で新規作成
+create_data_plane_resource_group       = true
+existing_data_plane_resource_group_name = ""
+
+# ワークスペース Web UI/API へのパブリックアクセスを許可（要件に合わせて true）
+public_network_access_enabled = true
+
+# （任意）Private サブネットに付与する Service Endpoint（必要なければ空配列のまま）
+# 例: ["Microsoft.Storage", "Microsoft.KeyVault"]
+private_subnet_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
+
+
+subscription_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXX" 
