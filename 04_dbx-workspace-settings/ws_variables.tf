@@ -24,37 +24,37 @@ variable "location" {
   description = "01_azure-infra の outputs.location"
 }
 
-variable "ext_storage_account_name" {
+variable "ext_loc_storage_account_name" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_storage_account_name"
 }
 
-variable "ext_storage_account_id" {
+variable "ext_loc_storage_account_id" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_storage_account_id"
 }
 
-variable "ext_container_name" {
+variable "ext_loc_container_name" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_container_name"
 }
 
-variable "ext_abfss_url" {
+variable "ext_loc_abfss_url" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_abfss_url"
 }
 
-variable "ext_managed_identity_id" {
+variable "ext_loc_managed_identity_id" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_managed_identity_id"
 }
 
-variable "ext_access_connector_id" {
+variable "ext_loc_access_connector_id" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_access_connector_id"
 }
 
-variable "ext_access_connector_name" {
+variable "ext_loc_access_connector_name" {
   type        = string
   description = "01_azure-infra の outputs.ext_loc_access_connector_name"
 }

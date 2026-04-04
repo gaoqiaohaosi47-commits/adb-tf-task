@@ -12,13 +12,13 @@ locals {
   dp_rg_location = var.location
 
   # 01_azure-infra outputs（外部ロケーション用ストレージ）
-  ext_storage_account_name = var.ext_storage_account_name
-  ext_storage_account_id   = var.ext_storage_account_id
-  ext_container_name       = var.ext_container_name
-  ext_abfss_url            = var.ext_abfss_url
+  ext_storage_account_name = var.ext_loc_storage_account_name
+  ext_storage_account_id   = var.ext_loc_storage_account_id
+  ext_container_name       = var.ext_loc_container_name
+  ext_abfss_url            = var.ext_loc_abfss_url
 
   # 01_azure-infra outputs（マネージド ID / アクセスコネクタ）
-  ext_managed_identity_id   = var.ext_managed_identity_id
-  ext_access_connector_id   = var.ext_access_connector_id
-  ext_access_connector_name = var.ext_access_connector_name
+  ext_managed_identity_id   = var.ext_loc_managed_identity_id
+  ext_access_connector_id   = var.ext_loc_access_connector_id
+  ext_access_connector_name = var.ext_loc_access_connector_name
 }
