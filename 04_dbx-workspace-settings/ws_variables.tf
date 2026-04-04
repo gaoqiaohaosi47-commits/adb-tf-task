@@ -1,4 +1,65 @@
 #--------------------------------------------------------------
+# 02_databricks-workspace outputs から受け取る値
+#--------------------------------------------------------------
+variable "workspace_url" {
+  type        = string
+  description = "02_databricks-workspace の outputs.workspace_url"
+}
+
+variable "workspace_id" {
+  type        = string
+  description = "02_databricks-workspace の outputs.workspace_id"
+}
+
+#--------------------------------------------------------------
+# 01_azure-infra outputs から受け取る値
+#--------------------------------------------------------------
+variable "resource_group_name" {
+  type        = string
+  description = "01_azure-infra の outputs.resource_group_name"
+}
+
+variable "location" {
+  type        = string
+  description = "01_azure-infra の outputs.location"
+}
+
+variable "ext_storage_account_name" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_storage_account_name"
+}
+
+variable "ext_storage_account_id" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_storage_account_id"
+}
+
+variable "ext_container_name" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_container_name"
+}
+
+variable "ext_abfss_url" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_abfss_url"
+}
+
+variable "ext_managed_identity_id" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_managed_identity_id"
+}
+
+variable "ext_access_connector_id" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_access_connector_id"
+}
+
+variable "ext_access_connector_name" {
+  type        = string
+  description = "01_azure-infra の outputs.ext_loc_access_connector_name"
+}
+
+#--------------------------------------------------------------
 # 共通
 #--------------------------------------------------------------
 variable "databricks_account_id" {

@@ -1,66 +1,61 @@
-variable "cidr_dp" {
+#--------------------------------------------------------------
+# 01_azure-infra outputs から受け取る値
+#--------------------------------------------------------------
+variable "prefix" {
   type        = string
-  description = "(Required) The CIDR for the Azure Data Plane VNet"
+  description = "01_azure-infra の outputs.prefix（リソース名プレフィックス）"
 }
 
-variable "existing_data_plane_resource_group_name" {
+variable "dbfs_storage_account_name" {
   type        = string
-  description = "Specify the name of an existing Resource Group for Data plane resources only if you do not want Terraform to create a new one"
-  validation {
-    condition     = var.create_data_plane_resource_group == true || length(var.existing_data_plane_resource_group_name) > 0
-    error_message = "The resource_group_name variable cannot be empty if create_resource_group is set to false"
-  }
+  description = "01_azure-infra の outputs.dbfs_storage_account_name（DBFS ストレージアカウント名）"
 }
 
-variable "create_data_plane_resource_group" {
-  type        = bool
-  description = "Set to true to create a new Azure Resource Group for data plane resources. Set to false to use an existing Resource Group specified in existing_data_plane_resource_group_name"
+variable "resource_group_name" {
+  type        = string
+  description = "01_azure-infra の outputs.resource_group_name（Data Plane RG 名）"
 }
 
 variable "location" {
   type        = string
-  description = "(Required) The location for the resources in this module"
+  description = "01_azure-infra の outputs.location（デプロイリージョン）"
 }
 
+variable "vnet_id" {
+  type        = string
+  description = "01_azure-infra の outputs.vnet_id（VNet ID）"
+}
+
+variable "public_subnet_name" {
+  type        = string
+  description = "01_azure-infra の outputs.public_subnet_name"
+}
+
+variable "private_subnet_name" {
+  type        = string
+  description = "01_azure-infra の outputs.private_subnet_name"
+}
+
+variable "public_subnet_nsg_association_id" {
+  type        = string
+  description = "01_azure-infra の outputs.public_subnet_nsg_association_id"
+}
+
+variable "private_subnet_nsg_association_id" {
+  type        = string
+  description = "01_azure-infra の outputs.private_subnet_nsg_association_id"
+}
+
+#--------------------------------------------------------------
+# ワークスペース設定
+#--------------------------------------------------------------
 variable "public_network_access_enabled" {
   type        = bool
-  description = "(Optional, default: true) If access from public networks should be enabled for the workspace Web UI/API"
+  description = "ワークスペース Web UI/API へのパブリックアクセスを許可するか"
   default     = true
 }
 
-variable "private_subnet_endpoints" {
-  description = "The list of Service endpoints to associate with the private subnet."
-  type        = list(string)
-  default     = []
-}
-
-variable "subscription_id" {}
-
-variable "use_existing_vnet" {
-  type        = bool
-  description = "Set to true to use an existing VNet. Set to false to create a new one."
-  default     = false
-}
-
-variable "existing_vnet_name" {
+variable "subscription_id" {
   type        = string
-  description = "Name of the existing VNet to use when use_existing_vnet is true"
-  default     = ""
-  validation {
-    condition     = var.use_existing_vnet == false || length(var.existing_vnet_name) > 0
-    error_message = "existing_vnet_name must be specified when use_existing_vnet is true"
-  }
+  description = "Azure サブスクリプション ID"
 }
-
-variable "existing_vnet_resource_group_name" {
-  type        = string
-  description = "Resource group of the existing VNet. Defaults to the data plane resource group if empty."
-  default     = ""
-}
-
-variable "create_private_dns_zones" {
-  type        = bool
-  description = "Set to false when deploying multiple environments into the same RG to reuse existing Private DNS Zones"
-  default     = true
-}
-

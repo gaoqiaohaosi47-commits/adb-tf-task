@@ -1,27 +1,30 @@
-#############################################
-# 基本設定（新規の Data Plane RG を作成）
-#############################################
+# ==============================================================
+# 03_ws-after-task / terraform.tfvars
+# 実行者: ネットワーク管理者
+#
+# ※ 以下の値は 01/02 の apply 後に取得してください
+#   01: cd ../01_azure-infra && terraform output
+#   02: cd ../02_databricks-workspace && terraform output
+# ==============================================================
 
-# リージョン（例：Japan East）
-# location = "japaneast"
-location = "eastus"
+# --- 01_azure-infra outputs から転記 ---
+prefix                       = "tfdemo-xxxxxx"
+resource_group_name          = "adb-dp-tfdemo-xxxxxx-rg"
+location                     = "eastus"
+vnet_id                      = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX"
+privatelink_subnet_id        = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX/subnets/tfdemo-xxxxxx-dp-privatelink"
+dns_zone_resource_group_name = "adb-dp-tfdemo-xxxxxx-rg"  # DNS Zone が別 RG にある場合は変更
+dns_zone_dpcp_id             = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.azuredatabricks.net"
+dns_zone_dpcp_name           = "privatelink.azuredatabricks.net"
+dns_zone_dfs_id              = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
+dns_zone_dfs_name            = "privatelink.dfs.core.windows.net"
+dns_zone_blob_id             = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+dns_zone_blob_name           = "privatelink.blob.core.windows.net"
 
-# Data Plane VNet のアドレス空間（この /16 はモジュール内で /22 に細分化されます）
-#   - public: cidrsubnet(var.cidr_dp, 6, 0)  → /22
-#   - private: cidrsubnet(var.cidr_dp, 6, 1) → /22
-#   - privatelink: cidrsubnet(var.cidr_dp, 6, 2) → /22
-cidr_dp = "10.10.0.0/16"
+# --- 02_databricks-workspace outputs から転記 ---
+workspace_resource_id      = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Databricks/workspaces/XXXX"
+managed_resource_group_id  = "/subscriptions/XXXX/resourceGroups/databricks-rg-XXXX"
+dbfs_storage_account_name  = "dbfsxxxxxx"
 
-# Data Plane 用 RG は Terraform で新規作成
-create_data_plane_resource_group       = true
-existing_data_plane_resource_group_name = ""
-
-# ワークスペース Web UI/API へのパブリックアクセスを許可（要件に合わせて true）
-public_network_access_enabled = true
-
-# （任意）Private サブネットに付与する Service Endpoint（必要なければ空配列のまま）
-# 例: ["Microsoft.Storage", "Microsoft.KeyVault"]
-private_subnet_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
-
-
-subscription_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXX" 
+# --- Azure 認証 ---
+subscription_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

@@ -1,47 +1,60 @@
-# terraform.tfvars
+# ==============================================================
+# 04_dbx-workspace-settings / terraform.tfvars
+# 実行者: データエンジニア
+#
+# ※ 以下の値は 01/02 の apply 後に取得してください
+#   01: cd ../01_azure-infra && terraform output
+#   02: cd ../02_databricks-workspace && terraform output
+# ==============================================================
 
+# --- 02_databricks-workspace outputs から転記 ---
+workspace_url = "https://adb-XXXX.azuredatabricks.net/"
+workspace_id  = "XXXXXXXXXXXXXXXX"
+
+# --- 01_azure-infra outputs から転記 ---
+resource_group_name       = "adb-dp-tfdemo-xxxxxx-rg"
+location                  = "eastus"
+ext_storage_account_name  = "tfdemoxxxxxxextloc"
+ext_storage_account_id    = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Storage/storageAccounts/XXXX"
+ext_container_name        = "external"
+ext_abfss_url             = "abfss://external@tfdemoxxxxxxextloc.dfs.core.windows.net/"
+ext_managed_identity_id   = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.ManagedIdentity/userAssignedIdentities/XXXX"
+ext_access_connector_id   = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Databricks/accessConnectors/XXXX"
+ext_access_connector_name = "tfdemo-xxxxxx-ext-loc-access-connector"
+
+# --- Databricks アカウント ---
 databricks_account_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
-# 001: グループ
+# --- 001: グループ ---
 uc_group_name       = "uc-users"
 ws_admin_group_name = "ws-admins"
 
-# 003: サービスプリンシパル
+# --- 003: サービスプリンシパル ---
 service_principal_display_name = "tf-automation-sp"
 
-# 005: SQL ウェアハウス
+# --- 005: SQL ウェアハウス ---
 sql_warehouse_name = "analytics-warehouse"
 
-# 006: IPアクセスリスト
+# --- 006: IP アクセスリスト ---
 ip_access_list = [
   { label = "office-1", address = "8.8.8.8" },
   { label = "office-2", address = "8.8.4.4" }
 ]
 
-# 008: メタストア
+# --- 008: メタストア ---
 metastore_name = "my-metastore"
 
-# 011: カタログ
+# --- 011: カタログ ---
 catalog_name = "analytics_catalog"
 
-# 012: スキーマ
+# --- 012: スキーマ ---
 schema_names = ["bronze", "silver", "gold"]
 
-# 013: ボリューム
+# --- 013: ボリューム ---
 volume_name   = "raw_data"
 volume_schema = "bronze"
 
-# 015: ネットワークポリシー
+# --- 015: ネットワークポリシー ---
 network_policy_enforcement_mode = "DRY_RUN"
 
-allowed_internet_destinations = [
-  # 必要に応じて追加
-  # {
-  #   destination              = "pypi.org"
-  #   internet_destination_type = "DNS_NAME"
-  # },
-  # {
-  #   destination              = "github.com"
-  #   internet_destination_type = "DNS_NAME"
-  # }
-]
+allowed_internet_destinations = []

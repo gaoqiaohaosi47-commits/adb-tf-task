@@ -22,12 +22,6 @@ variable "location" {
   description = "(Required) The location for the resources in this module"
 }
 
-variable "public_network_access_enabled" {
-  type        = bool
-  description = "(Optional, default: true) If access from public networks should be enabled for the workspace Web UI/API"
-  default     = true
-}
-
 variable "private_subnet_endpoints" {
   description = "The list of Service endpoints to associate with the private subnet."
   type        = list(string)
