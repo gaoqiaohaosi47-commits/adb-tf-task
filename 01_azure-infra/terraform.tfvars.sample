@@ -13,15 +13,19 @@ location = "eastus"
 cidr_dp = "10.10.0.0/16"
 
 # Data Plane 用 RG は Terraform で新規作成
-create_data_plane_resource_group       = true
+create_data_plane_resource_group = true
 existing_data_plane_resource_group_name = ""
-
-# ワークスペース Web UI/API へのパブリックアクセスを許可（要件に合わせて true）
-public_network_access_enabled = true
 
 # （任意）Private サブネットに付与する Service Endpoint（必要なければ空配列のまま）
 # 例: ["Microsoft.Storage", "Microsoft.KeyVault"]
 private_subnet_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
 
+# 既存の VNet を使用するかどうか
+use_existing_vnet = false
+existing_vnet_name = ""
+existing_vnet_resource_group_name = ""
+
+# Private DNS Zones を作成するかどうか（複数環境で同じ RG を使用する場合 false）
+create_private_dns_zones = true
 
 subscription_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXX" 
