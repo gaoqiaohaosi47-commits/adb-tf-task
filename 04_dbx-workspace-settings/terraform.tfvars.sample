@@ -2,9 +2,22 @@
 # 04_dbx-workspace-settings / terraform.tfvars
 # 実行者: データエンジニア
 #
+# リソーススコープ：
+#   - アカウント単位: サービスプリンシパル、ネットワークポリシー
+#   - ワークスペース単位: グループ、SQLウェアハウス、IPアクセスリスト
+#   - メタストア単位: カタログ
+#   - カタログ単位: スキーマ
+#   - スキーマ単位: ボリューム
+#
 # ※ 以下の値は 01/02 の apply 後に取得してください
 #   01: cd ../01_azure-infra && terraform output
 #   02: cd ../02_databricks-workspace && terraform output
+#
+# ※ 既存リソースがある場合の対応:
+#   リソースが既に同じスコープに存在する場合、以下の方法で対応してください
+#   1. リソース名を変更して新規作成（例: uc-users → uc-users-2）
+#   2. terraform state に既存リソースを import: terraform import リソースpath 既存ID
+#   3. terraform destroy + apply: 既存リソースを削除して再作成
 # ==============================================================
 
 # --- 02_databricks-workspace outputs から転記 ---
@@ -25,39 +38,50 @@ ext_loc_access_connector_name = "tfdemo-xxxxxx-ext-loc-access-connector"
 # --- Databricks アカウント ---
 databricks_account_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
-# --- 001: グループ ---
+# --- 001: グループ (ワークスペース単位) ---
+# ※ グループは各ワークスペース内で一意である必要があるため、同じ名前のグループがこのワークスペース内に既に存在する場合は、名前を変更してください
 uc_group_name       = "uc-users"
 ws_admin_group_name = "ws-admins"
 
-# --- 003: サービスプリンシパル ---
+# --- 003: サービスプリンシパル (アカウント単位) ---
+# ※ サービスプリンシパルはDatabricksアカウント全体で一意であるため、同じdisplay_nameのサービスプリンシパルが既に存在する場合は、display_nameを変更してください
 service_principal_display_name = "tf-automation-sp"
 
-# --- 005: SQL ウェアハウス ---
+# --- 005: SQL ウェアハウス (ワークスペース単位) ---
+# ※ ウェアハウスは各ワークスペース内で一意であるため、同じ名前のウェアハウスがこのワークスペース内に既に存在する場合は、名前を変更してください
 sql_warehouse_name = "analytics-warehouse"
 
-# --- 006: IP アクセスリスト ---
+# --- 006: IP アクセスリスト (ワークスペース単位) ---
+# ※ IP アクセスリストは各ワークスペースごとに設定されるため、変更不可とします。既存リストを削除して上書きしてください
 ip_access_list = [
   { label = "office-1", address = "8.8.8.8" },
   { label = "office-2", address = "8.8.4.4" }
 ]
 
-# --- 008: メタストア ---
+# --- 008: メタストア (アカウント単位) ---
 # ※ Unity Catalog が有効な場合はメタストア名を指定してください
 # ※ 設定しない場合（空文字列）、メタストア権限設定はスキップされます
+# ※ メタストアはアカウント単位で一意のため、複数のワークスペースから同じメタストアを参照します
 metastore_name = ""
 # metastore_name = "my-metastore"
 
-# --- 011: カタログ ---
+# --- 011: カタログ (メタストア単位) ---
+# ※ カタログは指定されたメタストア内で一意である必要があるため、同じ名前のカタログが既に存在する場合は、名前を変更してください（例: analytics_catalog_1）
 catalog_name = "analytics_catalog"
 
-# --- 012: スキーマ ---
+# --- 012: スキーマ (カタログ単位) ---
+# ※ スキーマは指定されたカタログ内で一意である必要があるため、同じ名前のスキーマが既に存在する場合は、名前を変更してください
 schema_names = ["bronze", "silver", "gold"]
 
-# --- 013: ボリューム ---
+# --- 013: ボリューム (スキーマ単位) ---
+# ※ ボリュームは指定されたスキーマ内で一意である必要があるため、同じ名前のボリュームが既に存在する場合は、名前を変更してください
 volume_name   = "raw_data"
 volume_schema = "bronze"
 
-# --- 015: ネットワークポリシー ---
+# --- 015: ネットワークポリシー (アカウント単位) ---
+# ※ ネットワークポリシーは Databricks アカウント全体で、network_policy_id を使用して一意に識別します
+# ※ 同じ network_policy_id のポリシーが既に存在する場合は、network_policy_id を変更してください
+# ※ または terraform import で既存ポリシーを state に登録してください
 network_policy_enforcement_mode = "DRY_RUN"
 
 allowed_internet_destinations = []
