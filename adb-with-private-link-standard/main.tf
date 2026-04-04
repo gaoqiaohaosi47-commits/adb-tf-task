@@ -1,4 +1,3 @@
-# ToDO : 同一RGのデプロイを有効に
 resource "random_string" "naming" {
   special = false
   upper   = false
@@ -25,6 +24,9 @@ locals {
   dp_rg_name     = var.create_data_plane_resource_group ? azurerm_resource_group.dp_rg[0].name : data.azurerm_resource_group.dp_rg[0].name
   dp_rg_id       = var.create_data_plane_resource_group ? azurerm_resource_group.dp_rg[0].id : data.azurerm_resource_group.dp_rg[0].id
   dp_rg_location = var.create_data_plane_resource_group ? azurerm_resource_group.dp_rg[0].location : (var.location == "" ? data.azurerm_resource_group.dp_rg[0].location : var.location)
+
+  dp_vnet_name = var.use_existing_vnet ? data.azurerm_virtual_network.dp_vnet[0].name : azurerm_virtual_network.dp_vnet[0].name
+  dp_vnet_id   = var.use_existing_vnet ? data.azurerm_virtual_network.dp_vnet[0].id : azurerm_virtual_network.dp_vnet[0].id
 }
 
 resource "azurerm_resource_group" "dp_rg" {

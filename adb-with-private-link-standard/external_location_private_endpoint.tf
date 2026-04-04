@@ -4,7 +4,7 @@
 #--------------------------------------------------------------
 resource "azurerm_private_endpoint" "ext_loc_dfs" {
   count               = var.ext_storage_public_access_enabled ? 0 : 1
-  name                = "ext-loc-pvtendpoint-dfs"
+  name                = "${local.prefix}-ext-loc-pvtendpoint-dfs"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   subnet_id           = azurerm_subnet.dp_plsubnet.id
@@ -18,8 +18,8 @@ resource "azurerm_private_endpoint" "ext_loc_dfs" {
   }
 
   private_dns_zone_group {
-    name                 = "ext-loc-private-dns-zone-dfs"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dnsdbfs_dfs.id]
+    name                 = "${local.prefix}-ext-loc-private-dns-zone-dfs"
+    private_dns_zone_ids = [local.dns_zone_dfs_id]
   }
 }
 
@@ -29,7 +29,7 @@ resource "azurerm_private_endpoint" "ext_loc_dfs" {
 #--------------------------------------------------------------
 resource "azurerm_private_endpoint" "ext_loc_blob" {
   count               = var.ext_storage_public_access_enabled ? 0 : 1
-  name                = "ext-loc-pvtendpoint-blob"
+  name                = "${local.prefix}-ext-loc-pvtendpoint-blob"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   subnet_id           = azurerm_subnet.dp_plsubnet.id
@@ -43,7 +43,7 @@ resource "azurerm_private_endpoint" "ext_loc_blob" {
   }
 
   private_dns_zone_group {
-    name                 = "ext-loc-private-dns-zone-blob"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dnsdbfs_blob.id]
+    name                 = "${local.prefix}-ext-loc-private-dns-zone-blob"
+    private_dns_zone_ids = [local.dns_zone_blob_id]
   }
 }

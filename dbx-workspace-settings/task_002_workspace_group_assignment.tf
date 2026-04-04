@@ -2,8 +2,6 @@
 # 002: ワークスペースへのグループ関連付け・エンタイトルメント設定
 #==============================================================
 
-# ToDO　グループ、サービスプリンシパルの権限を変更
-
 # 実行ユーザーをUC利用グループに追加
 resource "databricks_group_member" "current_user_to_uc_users" {
   provider  = databricks.account
@@ -15,7 +13,7 @@ resource "databricks_group_member" "current_user_to_uc_users" {
   ]
 }
 
-# 実行ユーザーをWS管理者グループにも追加
+# 実行ユーザーをWS管理者グループに追加
 resource "databricks_group_member" "current_user_to_ws_admins" {
   provider  = databricks.account
   group_id  = databricks_group.ws_admins.id
@@ -23,6 +21,18 @@ resource "databricks_group_member" "current_user_to_ws_admins" {
 
   depends_on = [
     databricks_group.ws_admins
+  ]
+}
+
+# サービスプリンシパルをWS管理者グループに追加（自動化SP に管理者権限を付与）
+resource "databricks_group_member" "sp_to_ws_admins" {
+  provider  = databricks.account
+  group_id  = databricks_group.ws_admins.id
+  member_id = databricks_service_principal.automation.id
+
+  depends_on = [
+    databricks_group.ws_admins,
+    databricks_service_principal.automation
   ]
 }
 

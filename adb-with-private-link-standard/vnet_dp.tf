@@ -1,4 +1,21 @@
+#--------------------------------------------------------------
+# 既存 VNet のデータ参照（use_existing_vnet = true の場合）
+#--------------------------------------------------------------
+locals {
+  existing_vnet_rg = var.existing_vnet_resource_group_name != "" ? var.existing_vnet_resource_group_name : local.dp_rg_name
+}
+
+data "azurerm_virtual_network" "dp_vnet" {
+  count               = var.use_existing_vnet ? 1 : 0
+  name                = var.existing_vnet_name
+  resource_group_name = local.existing_vnet_rg
+}
+
+#--------------------------------------------------------------
+# VNet（use_existing_vnet = false の場合のみ新規作成）
+#--------------------------------------------------------------
 resource "azurerm_virtual_network" "dp_vnet" {
+  count               = var.use_existing_vnet ? 0 : 1
   name                = "${local.prefix}-dp-vnet"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
@@ -14,7 +31,7 @@ resource "azurerm_network_security_group" "dp_sg" {
 }
 
 resource "azurerm_network_security_rule" "dp_aad" {
-  name                        = "AllowAAD-dp"
+  name                        = "${local.prefix}-AllowAAD-dp"
   priority                    = 200
   direction                   = "Outbound"
   access                      = "Allow"
@@ -28,7 +45,7 @@ resource "azurerm_network_security_rule" "dp_aad" {
 }
 
 resource "azurerm_network_security_rule" "dp_azfrontdoor" {
-  name                        = "AllowAzureFrontDoor-dp"
+  name                        = "${local.prefix}-AllowAzureFrontDoor-dp"
   priority                    = 201
   direction                   = "Outbound"
   access                      = "Allow"
@@ -44,7 +61,7 @@ resource "azurerm_network_security_rule" "dp_azfrontdoor" {
 resource "azurerm_subnet" "dp_public" {
   name                 = "${local.prefix}-dp-public"
   resource_group_name  = local.dp_rg_name
-  virtual_network_name = azurerm_virtual_network.dp_vnet.name
+  virtual_network_name = local.dp_vnet_name
   address_prefixes     = [cidrsubnet(var.cidr_dp, 6, 0)]
 
   delegation {
@@ -54,7 +71,8 @@ resource "azurerm_subnet" "dp_public" {
       actions = [
         "Microsoft.Network/virtualNetworks/subnets/join/action",
         "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
-      "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
     }
   }
 }
@@ -67,7 +85,7 @@ resource "azurerm_subnet_network_security_group_association" "dp_public" {
 resource "azurerm_subnet" "dp_private" {
   name                 = "${local.prefix}-dp-private"
   resource_group_name  = local.dp_rg_name
-  virtual_network_name = azurerm_virtual_network.dp_vnet.name
+  virtual_network_name = local.dp_vnet_name
   address_prefixes     = [cidrsubnet(var.cidr_dp, 6, 1)]
 
   private_endpoint_network_policies = "Enabled"
@@ -79,7 +97,8 @@ resource "azurerm_subnet" "dp_private" {
       actions = [
         "Microsoft.Network/virtualNetworks/subnets/join/action",
         "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
-      "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
     }
   }
 
@@ -94,7 +113,7 @@ resource "azurerm_subnet_network_security_group_association" "dp_private" {
 resource "azurerm_subnet" "dp_plsubnet" {
   name                              = "${local.prefix}-dp-privatelink"
   resource_group_name               = local.dp_rg_name
-  virtual_network_name              = azurerm_virtual_network.dp_vnet.name
+  virtual_network_name              = local.dp_vnet_name
   address_prefixes                  = [cidrsubnet(var.cidr_dp, 6, 2)]
   private_endpoint_network_policies = "Disabled"
 }

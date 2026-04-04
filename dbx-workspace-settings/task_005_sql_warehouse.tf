@@ -1,7 +1,6 @@
 #==============================================================
 # 005: SQL ウェアハウスの作成 (サーバレス / 2X-Small)
 #==============================================================
-# TODO　全てのユーザーに権限
 resource "databricks_sql_endpoint" "this" {
   provider                  = databricks.workspace
   name                      = var.sql_warehouse_name
@@ -37,6 +36,12 @@ resource "databricks_permissions" "sql_warehouse" {
   access_control {
     group_name       = databricks_group.ws_admins.display_name
     permission_level = "CAN_MANAGE"
+  }
+
+  # 全アカウントユーザーに実行権限を付与
+  access_control {
+    group_name       = "users"
+    permission_level = "CAN_USE"
   }
 
   depends_on = [

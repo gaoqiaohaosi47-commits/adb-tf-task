@@ -1,9 +1,14 @@
 #==============================================================
 # 009: 資格情報 (Storage Credential)
-#      - リモートステートからアクセスコネクタ/マネージドID参照
-#      - ISOLATED ワークスペース限定
-#      - UC利用グループを所有者に
-#      - 実行ユーザーに CREATE_EXTERNAL_LOCATION 権限を付与
+#
+# 前提:
+#   - リモートステートからアクセスコネクタ/マネージドIDを参照
+#   - ISOLATED ワークスペース限定
+#
+# 実施:
+#   - Storage Credential を作成
+#   - UC利用グループを所有者に設定
+#   - uc_users / ws_admins グループに ALL_PRIVILEGES を付与
 #==============================================================
 
 resource "databricks_storage_credential" "ext_loc" {

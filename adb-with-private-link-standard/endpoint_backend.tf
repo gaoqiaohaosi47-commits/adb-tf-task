@@ -1,5 +1,5 @@
 resource "azurerm_private_endpoint" "dp_dpcp" {
-  name                = "dpcppvtendpoint-dp"
+  name                = "${local.prefix}-dpcppvtendpoint-dp"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   subnet_id           = azurerm_subnet.dp_plsubnet.id
@@ -12,7 +12,7 @@ resource "azurerm_private_endpoint" "dp_dpcp" {
   }
 
   private_dns_zone_group {
-    name                 = "dp-private-dns-zone-dpcp"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dnsdpcp.id]
+    name                 = "${local.prefix}-dp-private-dns-zone-dpcp"
+    private_dns_zone_ids = [local.dns_zone_dpcp_id]
   }
 }

@@ -36,3 +36,31 @@ variable "private_subnet_endpoints" {
 
 variable "subscription_id" {}
 
+variable "use_existing_vnet" {
+  type        = bool
+  description = "Set to true to use an existing VNet. Set to false to create a new one."
+  default     = false
+}
+
+variable "existing_vnet_name" {
+  type        = string
+  description = "Name of the existing VNet to use when use_existing_vnet is true"
+  default     = ""
+  validation {
+    condition     = var.use_existing_vnet == false || length(var.existing_vnet_name) > 0
+    error_message = "existing_vnet_name must be specified when use_existing_vnet is true"
+  }
+}
+
+variable "existing_vnet_resource_group_name" {
+  type        = string
+  description = "Resource group of the existing VNet. Defaults to the data plane resource group if empty."
+  default     = ""
+}
+
+variable "create_private_dns_zones" {
+  type        = bool
+  description = "Set to false when deploying multiple environments into the same RG to reuse existing Private DNS Zones"
+  default     = true
+}
+

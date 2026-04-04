@@ -1,10 +1,9 @@
-// For DFS
+# DBFS プライベートエンドポイント (DFS)
 resource "azurerm_private_endpoint" "dp_dbfspe_dfs" {
-  name                = "dbfspvtendpoint-dp-dfs"
+  name                = "${local.prefix}-dbfspvtendpoint-dp-dfs"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   subnet_id           = azurerm_subnet.dp_plsubnet.id
-
 
   private_service_connection {
     name                           = "ple-${local.prefix}-dp-dbfs-dfs"
@@ -14,18 +13,17 @@ resource "azurerm_private_endpoint" "dp_dbfspe_dfs" {
   }
 
   private_dns_zone_group {
-    name                 = "private-dns-zone-dbfs-dfs"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dnsdbfs_dfs.id]
+    name                 = "${local.prefix}-private-dns-zone-dbfs-dfs"
+    private_dns_zone_ids = [local.dns_zone_dfs_id]
   }
 }
 
-// for Blob
+# DBFS プライベートエンドポイント (Blob)
 resource "azurerm_private_endpoint" "dp_dbfspe_blob" {
-  name                = "dbfspvtendpoint-dp-blob"
+  name                = "${local.prefix}-dbfspvtendpoint-dp-blob"
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   subnet_id           = azurerm_subnet.dp_plsubnet.id
-
 
   private_service_connection {
     name                           = "ple-${local.prefix}-dp-dbfs-blob"
@@ -35,7 +33,7 @@ resource "azurerm_private_endpoint" "dp_dbfspe_blob" {
   }
 
   private_dns_zone_group {
-    name                 = "private-dns-zone-dbfs-blob"
-    private_dns_zone_ids = [azurerm_private_dns_zone.dnsdbfs_blob.id]
+    name                 = "${local.prefix}-private-dns-zone-dbfs-blob"
+    private_dns_zone_ids = [local.dns_zone_blob_id]
   }
 }
