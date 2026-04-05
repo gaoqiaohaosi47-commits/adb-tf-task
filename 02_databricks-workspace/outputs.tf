@@ -1,6 +1,6 @@
-#--------------------------------------------------------------
-# 03_ws-after-task / 04_dbx-workspace-settings への引き渡し用
-#--------------------------------------------------------------
+#==============================================================
+# 出力値（03_ws-after-task / 04_dbx-workspace-settings へ引き渡し）
+#==============================================================
 output "workspace_url" {
   description = "Databricks ワークスペース URL"
   value       = "https://${azurerm_databricks_workspace.dp_workspace.workspace_url}/"

@@ -1,6 +1,18 @@
+#==============================================================
+# 外部ロケーション用ストレージ - プライベートエンドポイント
+#
+# 前提:
+#   - 外部ロケーション用ストレージ (external_location_storage.tf) が作成済みであること
+#   - Private DNS Zone (private_dns_zone_dp.tf) が作成済みであること
+#   - ext_storage_public_access_enabled = false の場合のみ作成
+#
+# 実施:
+#   - DFS / Blob 向けプライベートエンドポイントを作成
+#   - 各 DNS Zone グループに登録
+#==============================================================
+
 #--------------------------------------------------------------
 # 外部ロケーション用ストレージ - プライベートエンドポイント (DFS)
-# ※ DNSゾーンは既存の azurerm_private_dns_zone.dnsdbfs_dfs を共用
 #--------------------------------------------------------------
 resource "azurerm_private_endpoint" "ext_loc_dfs" {
   count               = var.ext_storage_public_access_enabled ? 0 : 1
@@ -25,7 +37,6 @@ resource "azurerm_private_endpoint" "ext_loc_dfs" {
 
 #--------------------------------------------------------------
 # 外部ロケーション用ストレージ - プライベートエンドポイント (Blob)
-# ※ DNSゾーンは既存の azurerm_private_dns_zone.dnsdbfs_blob を共用
 #--------------------------------------------------------------
 resource "azurerm_private_endpoint" "ext_loc_blob" {
   count               = var.ext_storage_public_access_enabled ? 0 : 1

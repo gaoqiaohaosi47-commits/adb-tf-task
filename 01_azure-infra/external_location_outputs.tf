@@ -1,3 +1,7 @@
+#==============================================================
+# 出力値 - 外部ロケーション関連（04_dbx-workspace-settings へ引き渡し）
+#==============================================================
+
 output "ext_loc_storage_account_name" {
   description = "外部ロケーション用ストレージアカウント名"
   value       = azurerm_storage_account.external_location.name

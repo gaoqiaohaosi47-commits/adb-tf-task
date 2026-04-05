@@ -4,16 +4,73 @@
 データエンジニア
 
 ## 概要
-Databricks ワークスペース作成（この時点ではネットワーク未設定）
+Databricks ワークスペースを作成する。この時点ではプライベートエンドポイントは未設定で、
+ネットワーク設定は後続の 03_ws-after-task で行う。
 
-このモジュールは、Databricks ワークスペースを作成します。ネットワーク設定は後続のモジュールで行われます。
+## 前提条件
+- `01_azure-infra` の apply が完了していること
+- `terraform output` で出力値を取得し `terraform.tfvars` に転記済みであること
+- Azure CLI がインストール済みで `az login` 済みであること
 
-## 作成されるもの
-- Databricks ワークスペース
+## ファイル構成
 
-### 出力
-- workspace_url: Databricks ワークスペース URL
-- workspace_id: Databricks ワークスペース ID（数値）
-- workspace_resource_id: Databricks ワークスペースの Azure リソース ID
-- managed_resource_group_id: Databricks マネージドリソースグループ ID
-- dbfs_storage_account_name: DBFS ストレージアカウント名
+| ファイル | 役割 |
+|---|---|
+| `providers.tf` | Terraform / AzureRM プロバイダー設定 |
+| `main.tf` | ローカル値定義・タグ設定 |
+| `variables.tf` | 入力変数定義（01_azure-infra outputs を受け取る） |
+| `databricks_workspace.tf` | Databricks ワークスペース作成 |
+| `outputs.tf` | ワークスペース情報の出力 |
+| `terraform.tfvars.sample` | 変数設定サンプル |
+
+## 変数一覧
+
+| 変数名 | 必須 | 説明 |
+|---|---|---|
+| `prefix` | ✓ | `01 output: prefix` |
+| `dbfs_storage_account_name` | ✓ | `01 output: dbfs_storage_account_name` |
+| `resource_group_name` | ✓ | `01 output: resource_group_name` |
+| `location` | ✓ | `01 output: location` |
+| `vnet_id` | ✓ | `01 output: vnet_id` |
+| `public_subnet_name` | ✓ | `01 output: public_subnet_name` |
+| `private_subnet_name` | ✓ | `01 output: private_subnet_name` |
+| `public_subnet_nsg_association_id` | ✓ | `01 output: public_subnet_nsg_association_id` |
+| `private_subnet_nsg_association_id` | ✓ | `01 output: private_subnet_nsg_association_id` |
+| `subscription_id` | ✓ | Azure サブスクリプション ID |
+| `public_network_access_enabled` | - | パブリックアクセス許可（デフォルト: true） |
+
+## 出力一覧
+
+| 出力名 | 説明 |
+|---|---|
+| `workspace_url` | Databricks ワークスペース URL |
+| `workspace_id` | Databricks ワークスペース ID（数値） |
+| `workspace_resource_id` | ワークスペースの Azure リソース ID |
+| `managed_resource_group_id` | Databricks マネージドリソースグループ ID |
+| `dbfs_storage_account_name` | DBFS ストレージアカウント名 |
+
+## 実行手順
+
+```bash
+cd 02_databricks-workspace
+
+# 1. 01_azure-infra の出力値を取得
+cd ../01_azure-infra && terraform output
+cd ../02_databricks-workspace
+
+# 2. 変数ファイルを準備（01 の output 値を転記）
+cp terraform.tfvars.sample terraform.tfvars
+# terraform.tfvars を編集して実際の値を設定
+
+# 3. 初期化
+terraform init
+
+# 4. 実行計画の確認
+terraform plan
+
+# 5. 適用
+terraform apply
+
+# 6. 後続モジュール用に出力値を記録
+terraform output
+```

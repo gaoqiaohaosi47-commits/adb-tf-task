@@ -1,3 +1,16 @@
+#==============================================================
+# Databricks ワークスペース作成
+#
+# 前提:
+#   - 01_azure-infra の VNet・サブネット・NSG が作成済みであること
+#   - terraform.tfvars に 01_azure-infra の outputs 値が設定済みであること
+#
+# 実施:
+#   - Premium SKU の Databricks ワークスペースを作成
+#   - カスタム VNet インジェクション（BYO VNet）を設定
+#   - DBFS ストレージアカウントを指定
+#==============================================================
+
 resource "azurerm_databricks_workspace" "dp_workspace" {
   name                                  = "${local.prefix}-dp-workspace"
   resource_group_name                   = var.resource_group_name
