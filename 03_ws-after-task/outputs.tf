@@ -1,3 +1,7 @@
+#==============================================================
+# 出力値（参照用）
+#==============================================================
+
 output "backend_private_endpoint_id" {
   description = "Backend (UI/API) プライベートエンドポイント ID"
   value       = azurerm_private_endpoint.dp_dpcp.id

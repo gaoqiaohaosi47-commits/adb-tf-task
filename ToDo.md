@@ -18,6 +18,13 @@
 - [x] `endpoint_dbfs.tf` を削除（03 へ移管）
 - [x] `outputs.tf` を修正：後続モジュールへの引き渡し値（prefix、VNET/サブネット/DNS Zone/ストレージ情報）を追加
 - [x] `variables.tf` を整理：ワークスペース関連の不要変数（`public_network_access_enabled`）を削除
+- [ ] 01_azure-infra のリソース命名を `random_string` / Epoch ベースから変数指定に変更
+  - 背景: プロジェクトオーナーがリソース名を自分で決定したい（システム自動生成を廃止）
+  - `main.tf`: `random_string.naming` リソースを削除、`local.prefix` / `local.dbfsname` を `var.prefix` / `var.dbfs_storage_account_name` に変更
+  - `local.tags` の `Epoch` エントリを削除
+  - `variables.tf`: `prefix`（string）・`dbfs_storage_account_name`（string）変数を追加
+  - `terraform.tfvars.sample`: 上記変数の記入欄を追加
+  - 注意: 02_databricks-workspace / 03_ws-after-task はすでに変数ベースに変更済み
 
 ## 02_databricks-workspace
 
@@ -43,8 +50,20 @@
 - [x] `ws_variables.tf` に 01/02 outputs の変数定義を追加
 - [x] `ws_data.tf` のメタストア参照コメントアウトを解除
 - [x] `terraform.tfvars.sample` を更新：01/02 の出力値を含む形式に整備
+- [ ] 一括実行時の権限伝播エラーを解消する
+  - `task_009` (Storage Credential) 作成後、WS バインドが Databricks 側に反映される前に `task_010` (External Location) が実行されてエラーになる
+  - `time_sleep` または `depends_on` で反映待ちを明示的に追加
+  - 実行順序の整理と各タスク間の依存関係を再確認
+- [ ] グループ・SP の管理権限問題を解消する
+  - 現状: 作成者のみがグループ・SP を管理できる
+  - 対応: 管理者グループ（例: `ws-group-managers`）を追加し、グループ管理者権限を付与
 
 ## 共通
 
 - [x] 各モジュールの `terraform.tfvars.sample` に「前のモジュールのどの output を入力すべきか」をコメントで明記
-- [ ] コメントを全体的に整理・統一する
+- [x] コメントを全体的に整理・統一する
+  - 全モジュールのコメントスタイルを `#==============================================================` 形式に統一
+  - リソース定義ファイルには「前提:」「実施:」セクションを追加
+  - 変数・出力・ローカルファイルにはタイトルヘッダーを追加
+- [x] 各モジュールの README に含まれるファイル・変数・実行手順を記載する
+  - 前提条件・ファイル構成・変数一覧（表形式）・出力一覧・実行手順コマンドを追加

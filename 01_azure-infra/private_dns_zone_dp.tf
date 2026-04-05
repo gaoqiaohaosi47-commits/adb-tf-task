@@ -1,6 +1,17 @@
+#==============================================================
+# Private DNS Zone
+#
+# 前提:
+#   - Data Plane リソースグループ (main.tf) が作成済みであること
+#
+# 実施:
+#   - Databricks / DFS / Blob 用 Private DNS Zone を作成（または既存を参照）
+#   - 各 DNS Zone を Data Plane VNet にリンク
+#   - create_private_dns_zones = false の場合は既存ゾーンをデータ参照のみ
+#==============================================================
+
 #--------------------------------------------------------------
 # Private DNS Zone: privatelink.azuredatabricks.net
-# create_private_dns_zones = false の場合は既存ゾーンを参照
 #--------------------------------------------------------------
 resource "azurerm_private_dns_zone" "dnsdpcp" {
   count               = var.create_private_dns_zones ? 1 : 0
