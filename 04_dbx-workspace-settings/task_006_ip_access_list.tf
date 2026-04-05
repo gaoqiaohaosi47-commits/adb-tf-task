@@ -10,10 +10,12 @@ resource "databricks_workspace_conf" "ip_access_list" {
 }
 
 resource "databricks_ip_access_list" "allow_list" {
+  for_each = { for item in var.ip_access_list : item.label => item }
+
   provider     = databricks.workspace
-  label        = "allowed-ips"
+  label        = each.value.label
   list_type    = "ALLOW"
-  ip_addresses = [for ip in var.ip_access_list : ip.address]
+  ip_addresses = each.value.addresses
 
   depends_on = [
     databricks_workspace_conf.ip_access_list

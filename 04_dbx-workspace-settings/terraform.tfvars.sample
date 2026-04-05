@@ -61,9 +61,21 @@ sql_warehouse_name = "analytics-warehouse"
 
 # --- 006: IP アクセスリスト (ワークスペース単位) ---
 # ※ IP アクセスリストは各ワークスペースごとに設定されるため、変更不可とします。既存リストを削除して上書きしてください
+# ⚠️ 重要: Terraform 実行環境の IP アドレスを必ずリストの先頭に含めること
+#    含めない場合、apply 時に、 Error: cannot create ip access list: でエラーになります
 ip_access_list = [
-  { label = "office-1", address = "8.8.8.8" },
-  { label = "office-2", address = "8.8.4.4" }
+  {
+    label     = "terraform-runner"
+    addresses = ["x.x.x.x"]  # Terraform 実行環境の IP（必須）
+  },
+  {
+    label     = "office"
+    addresses = ["8.8.8.8", "8.8.4.4"]
+  },
+  {
+    label     = "vpn"
+    addresses = ["1.1.1.1"]
+  }
 ]
 
 # --- 008: メタストア (アカウント単位) ---

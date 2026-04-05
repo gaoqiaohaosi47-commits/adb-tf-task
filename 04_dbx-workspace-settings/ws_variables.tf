@@ -110,10 +110,10 @@ variable "sql_warehouse_name" {
 #--------------------------------------------------------------
 variable "ip_access_list" {
   type = list(object({
-    label   = string
-    address = string
+    label     = string
+    addresses = list(string)
   }))
-  description = "許可するIPアドレスリスト"
+  description = "許可するIPアクセスリスト（ラベルごとに複数 IP を設定可能）"
 }
 
 #--------------------------------------------------------------
