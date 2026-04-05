@@ -28,11 +28,17 @@ resource "databricks_workspace_conf" "features" {
     # 1. セキュリティ・データ漏洩防止
     #----------------------------------------------------------
 
-    # ノートブックのエクスポート禁止 (default: false)
-    # "disableExportNotebook" = "true"  # ※ API 非対応キー
+    # ノートブックのエクスポート禁止 (default: true)
+    # ※ disableExportNotebook は API 非対応。enableExportNotebook で代替
+    "enableExportNotebook" = "false"
 
-    # クエリ結果のダウンロード禁止 (default: false)
-    # "disableResultsDownloading" = "true"  # ※ API 非対応キー
+    # クエリ結果のダウンロード禁止 (default: true)
+    # ※ disableResultsDownloading は API 非対応。enableResultsDownloading で代替
+    "enableResultsDownloading" = "false"
+
+    # (参考) disable* 版は API 非対応
+    # "disableExportNotebook" = "true"       # ※ API 非対応キー
+    # "disableResultsDownloading" = "true"   # ※ API 非対応キー
 
     # 外部データソースタイル非表示 (default: false)
     # "disableExternalDataSourcesTiles" = "false"  # ※ API 非対応キー
@@ -41,10 +47,12 @@ resource "databricks_workspace_conf" "features" {
     # "disallowUrlImportExceptFromDocs" = "true"  # ※ API 非対応キー
 
     # テーブル結果のクリップボードコピー禁止 (default: true)
+    # 結果テーブルのクリップボード機能
     "enableNotebookTableClipboard" = "false"
 
     # ノートブック結果をカスタマー管理ストレージに保存 (default: false)
-    "storeInteractiveNotebookResultsInCustomerAccount" = "true"
+    # インタラクティブなノートブックの結果を顧客アカウントに保存する
+    "storeInteractiveNotebookResultsInCustomerAccount" = "false"
 
     # URL を直接レンダリングする HTML 表示を許可 (default: true)
     # "allowDisplayHtmlByUrl" = "true"  # ※ API 非対応キー
@@ -72,7 +80,7 @@ resource "databricks_workspace_conf" "features" {
     # "enableSamlAssertionEncryptionForWorkspace" = "false"  # ※ API 非対応キー
 
     # PAT (Personal Access Token) の有効化 - 管理者トグル (default: true)
-    "enableTokensConfig" = "true"
+    "enableTokensConfig" = "false"
 
     # アカウントレベルでの PAT 無効化 (default: false)
     # "disablePersonalAccessTokenForAccount" = "false"  # ※ API 非対応キー
