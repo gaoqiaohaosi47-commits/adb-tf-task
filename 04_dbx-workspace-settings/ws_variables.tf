@@ -67,6 +67,11 @@ variable "databricks_account_id" {
   description = "Databricks アカウントID"
 }
 
+variable "azure_tenant_id" {
+  type        = string
+  description = "Azure テナントID（プロバイダー認証の自動検出誤検知防止のため明示指定）"
+}
+
 #--------------------------------------------------------------
 # 001: グループ
 #--------------------------------------------------------------

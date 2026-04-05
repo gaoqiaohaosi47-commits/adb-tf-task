@@ -2,16 +2,20 @@
 # 04_dbx-workspace-settings / terraform.tfvars
 # 実行者: データエンジニア
 #
+# 【事前準備】
+#   1. Azure CLI でログイン:
+#      az login
+#      az account set --subscription <subscription_id>
+#   2. 各モジュールの apply 完了後に出力値を転記:
+#      01: cd ../01_azure-infra && terraform output
+#      02: cd ../02_databricks-workspace && terraform output
+#
 # リソーススコープ：
 #   - アカウント単位: サービスプリンシパル、ネットワークポリシー
 #   - ワークスペース単位: グループ、SQLウェアハウス、IPアクセスリスト
 #   - メタストア単位: カタログ
 #   - カタログ単位: スキーマ
 #   - スキーマ単位: ボリューム
-#
-# ※ 以下の値は 01/02 の apply 後に取得してください
-#   01: cd ../01_azure-infra && terraform output
-#   02: cd ../02_databricks-workspace && terraform output
 #
 # ※ 既存リソースがある場合の対応:
 #   リソースが既に同じスコープに存在する場合、以下の方法で対応してください
@@ -37,6 +41,10 @@ ext_loc_access_connector_name = "tfdemo-xxxxxx-ext-loc-access-connector"
 
 # --- Databricks アカウント ---
 databricks_account_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# --- Azure テナントID ---
+# `az account show --query tenantId -o tsv` で取得できます
+azure_tenant_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 # --- 001: グループ (ワークスペース単位) ---
 # ※ グループは各ワークスペース内で一意である必要があるため、同じ名前のグループがこのワークスペース内に既に存在する場合は、名前を変更してください

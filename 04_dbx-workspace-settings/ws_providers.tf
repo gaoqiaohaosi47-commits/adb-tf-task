@@ -14,12 +14,14 @@ terraform {
 }
 
 provider "databricks" {
-  alias = "workspace"
-  host  = local.workspace_url
+  alias           = "workspace"
+  host            = local.workspace_url
+  azure_tenant_id = var.azure_tenant_id # 自動検出の誤検知を防ぐため明示指定
 }
 
 provider "databricks" {
-  alias      = "account"
-  host       = "https://accounts.azuredatabricks.net"
-  account_id = var.databricks_account_id
+  alias           = "account"
+  host            = "https://accounts.azuredatabricks.net"
+  account_id      = var.databricks_account_id
+  azure_tenant_id = var.azure_tenant_id # 自動検出の誤検知を防ぐため明示指定
 }
