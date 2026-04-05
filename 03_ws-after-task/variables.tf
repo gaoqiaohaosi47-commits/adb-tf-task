@@ -5,11 +5,6 @@
 #--------------------------------------------------------------
 # 01_azure-infra outputs から受け取る値
 #--------------------------------------------------------------
-variable "prefix" {
-  type        = string
-  description = "01_azure-infra の outputs.prefix（リソース名プレフィックス）"
-}
-
 variable "resource_group_name" {
   type        = string
   description = "01_azure-infra の outputs.resource_group_name"
@@ -81,6 +76,39 @@ variable "managed_resource_group_id" {
 variable "dbfs_storage_account_name" {
   type        = string
   description = "02_databricks-workspace の outputs.dbfs_storage_account_name"
+}
+
+#--------------------------------------------------------------
+# リソース命名
+#--------------------------------------------------------------
+variable "dns_vnet_link_dpcp_name" {
+  type        = string
+  description = "privatelink.azuredatabricks.net DNS Zone への VNet リンク名"
+}
+
+variable "dns_vnet_link_dfs_name" {
+  type        = string
+  description = "privatelink.dfs.core.windows.net DNS Zone への VNet リンク名"
+}
+
+variable "dns_vnet_link_blob_name" {
+  type        = string
+  description = "privatelink.blob.core.windows.net DNS Zone への VNet リンク名"
+}
+
+variable "backend_private_endpoint_name" {
+  type        = string
+  description = "Databricks UI/API 向け Backend プライベートエンドポイント名"
+}
+
+variable "dbfs_dfs_private_endpoint_name" {
+  type        = string
+  description = "DBFS DFS プライベートエンドポイント名"
+}
+
+variable "dbfs_blob_private_endpoint_name" {
+  type        = string
+  description = "DBFS Blob プライベートエンドポイント名"
 }
 
 #--------------------------------------------------------------

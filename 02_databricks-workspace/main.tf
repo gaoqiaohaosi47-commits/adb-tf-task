@@ -11,12 +11,10 @@ data "external" "me" {
 
 locals {
   # 01_azure-infra の outputs から tfvars で受け取る
-  prefix   = var.prefix
   dbfsname = var.dbfs_storage_account_name
 
   tags = {
     Environment = "Testing"
     Owner       = lookup(data.external.me.result, "name")
-    Prefix      = var.prefix
   }
 }

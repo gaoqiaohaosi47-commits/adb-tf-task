@@ -3,6 +3,104 @@
 #==============================================================
 
 #--------------------------------------------------------------
+# リソース命名
+#--------------------------------------------------------------
+variable "data_plane_resource_group_name" {
+  type        = string
+  description = "Data Plane リソースグループ名（create_data_plane_resource_group = true の場合に使用）"
+  default     = ""
+}
+
+variable "vnet_name" {
+  type        = string
+  description = "Data Plane VNet 名"
+  default     = "dp-vnet"
+}
+
+variable "nsg_name" {
+  type        = string
+  description = "NSG 名"
+  default     = "dp-nsg"
+}
+
+variable "nsg_rule_aad_name" {
+  type        = string
+  description = "AAD 許可 NSG ルール名"
+  default     = "AllowAAD"
+}
+
+variable "nsg_rule_frontdoor_name" {
+  type        = string
+  description = "Azure Front Door 許可 NSG ルール名"
+  default     = "AllowAzureFrontDoor"
+}
+
+variable "subnet_public_name" {
+  type        = string
+  description = "Databricks パブリックサブネット名"
+  default     = "dp-public"
+}
+
+variable "subnet_private_name" {
+  type        = string
+  description = "Databricks プライベートサブネット名"
+  default     = "dp-private"
+}
+
+variable "subnet_privatelink_name" {
+  type        = string
+  description = "Private Link サブネット名"
+  default     = "dp-privatelink"
+}
+
+variable "dns_vnet_link_dpcp_name" {
+  type        = string
+  description = "privatelink.azuredatabricks.net DNS Zone の VNet リンク名"
+  default     = "dpcp-vnetlink"
+}
+
+variable "dns_vnet_link_dfs_name" {
+  type        = string
+  description = "privatelink.dfs.core.windows.net DNS Zone の VNet リンク名"
+  default     = "dfs-vnetlink"
+}
+
+variable "dns_vnet_link_blob_name" {
+  type        = string
+  description = "privatelink.blob.core.windows.net DNS Zone の VNet リンク名"
+  default     = "blob-vnetlink"
+}
+
+variable "ext_loc_identity_name" {
+  type        = string
+  description = "外部ロケーション用マネージド ID 名"
+  default     = "ext-loc-identity"
+}
+
+variable "ext_loc_access_connector_name" {
+  type        = string
+  description = "外部ロケーション用 Databricks アクセスコネクタ名"
+  default     = "ext-loc-access-connector"
+}
+
+variable "ext_loc_private_endpoint_dfs_name" {
+  type        = string
+  description = "外部ロケーション用ストレージ DFS プライベートエンドポイント名"
+  default     = "ext-loc-pe-dfs"
+}
+
+variable "ext_loc_private_endpoint_blob_name" {
+  type        = string
+  description = "外部ロケーション用ストレージ Blob プライベートエンドポイント名"
+  default     = "ext-loc-pe-blob"
+}
+
+variable "dbfs_storage_account_name" {
+  type        = string
+  description = "Databricks DBFS ストレージアカウント名（英数字のみ、24文字以内）"
+}
+
+#--------------------------------------------------------------
 # ネットワーク・リソースグループ
 #--------------------------------------------------------------
 variable "cidr_dp" {

@@ -10,21 +10,21 @@
 #==============================================================
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dpcpdnszonevnetlink" {
-  name                  = "${local.prefix}-dpcpspokevnetconnection"
+  name                  = var.dns_vnet_link_dpcp_name
   resource_group_name   = var.dns_zone_resource_group_name
   private_dns_zone_name = local.dns_zone_dpcp_name
   virtual_network_id    = var.vnet_id
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dbfsdnszonevnetlink_dfs" {
-  name                  = "${local.prefix}-dbfsspokevnetconnection-dfs"
+  name                  = var.dns_vnet_link_dfs_name
   resource_group_name   = var.dns_zone_resource_group_name
   private_dns_zone_name = local.dns_zone_dfs_name
   virtual_network_id    = var.vnet_id
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dbfsdnszonevnetlink_blob" {
-  name                  = "${local.prefix}-dbfsspokevnetconnection-blob"
+  name                  = var.dns_vnet_link_blob_name
   resource_group_name   = var.dns_zone_resource_group_name
   private_dns_zone_name = local.dns_zone_blob_name
   virtual_network_id    = var.vnet_id

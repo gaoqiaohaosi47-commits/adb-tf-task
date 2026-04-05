@@ -2,12 +2,6 @@
 # ローカル値・共通設定
 #==============================================================
 
-resource "random_string" "naming" {
-  special = false
-  upper   = false
-  length  = 6
-}
-
 data "azurerm_client_config" "current" {}
 
 # 任意: オーナータグ付与（現在のログインユーザー）
@@ -16,13 +10,9 @@ data "external" "me" {
 }
 
 locals {
-  prefix   = join("-", ["tfdemo", random_string.naming.result])
-  dbfsname = join("", ["dbfs", random_string.naming.result]) // dbfs name must not have special chars
-
   tags = {
     Environment = "Testing"
     Owner       = lookup(data.external.me.result, "name")
-    Epoch       = random_string.naming.result
   }
 
   dp_rg_name     = var.create_data_plane_resource_group ? azurerm_resource_group.dp_rg[0].name : data.azurerm_resource_group.dp_rg[0].name
@@ -35,7 +25,7 @@ locals {
 
 resource "azurerm_resource_group" "dp_rg" {
   count    = var.create_data_plane_resource_group ? 1 : 0
-  name     = "adb-dp-${local.prefix}-rg"
+  name     = var.data_plane_resource_group_name
   location = var.location
   tags     = local.tags
 }

@@ -5,9 +5,14 @@
 #--------------------------------------------------------------
 # 01_azure-infra outputs から受け取る値
 #--------------------------------------------------------------
-variable "prefix" {
+variable "workspace_name" {
   type        = string
-  description = "01_azure-infra の outputs.prefix（リソース名プレフィックス）"
+  description = "Databricks ワークスペース名"
+}
+
+variable "managed_resource_group_name" {
+  type        = string
+  description = "Databricks マネージドリソースグループ名"
 }
 
 variable "dbfs_storage_account_name" {

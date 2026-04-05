@@ -28,7 +28,7 @@ data "azurerm_virtual_network" "dp_vnet" {
 #--------------------------------------------------------------
 resource "azurerm_virtual_network" "dp_vnet" {
   count               = var.use_existing_vnet ? 0 : 1
-  name                = "${local.prefix}-dp-vnet"
+  name                = var.vnet_name
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   address_space       = [var.cidr_dp]
@@ -36,14 +36,14 @@ resource "azurerm_virtual_network" "dp_vnet" {
 }
 
 resource "azurerm_network_security_group" "dp_sg" {
-  name                = "${local.prefix}-dp-nsg"
+  name                = var.nsg_name
   location            = local.dp_rg_location
   resource_group_name = local.dp_rg_name
   tags                = local.tags
 }
 
 resource "azurerm_network_security_rule" "dp_aad" {
-  name                        = "${local.prefix}-AllowAAD-dp"
+  name                        = var.nsg_rule_aad_name
   priority                    = 200
   direction                   = "Outbound"
   access                      = "Allow"
@@ -57,7 +57,7 @@ resource "azurerm_network_security_rule" "dp_aad" {
 }
 
 resource "azurerm_network_security_rule" "dp_azfrontdoor" {
-  name                        = "${local.prefix}-AllowAzureFrontDoor-dp"
+  name                        = var.nsg_rule_frontdoor_name
   priority                    = 201
   direction                   = "Outbound"
   access                      = "Allow"
@@ -71,7 +71,7 @@ resource "azurerm_network_security_rule" "dp_azfrontdoor" {
 }
 
 resource "azurerm_subnet" "dp_public" {
-  name                 = "${local.prefix}-dp-public"
+  name                 = var.subnet_public_name
   resource_group_name  = local.dp_rg_name
   virtual_network_name = local.dp_vnet_name
   address_prefixes     = [cidrsubnet(var.cidr_dp, 6, 0)]
@@ -95,7 +95,7 @@ resource "azurerm_subnet_network_security_group_association" "dp_public" {
 }
 
 resource "azurerm_subnet" "dp_private" {
-  name                 = "${local.prefix}-dp-private"
+  name                 = var.subnet_private_name
   resource_group_name  = local.dp_rg_name
   virtual_network_name = local.dp_vnet_name
   address_prefixes     = [cidrsubnet(var.cidr_dp, 6, 1)]
@@ -123,7 +123,7 @@ resource "azurerm_subnet_network_security_group_association" "dp_private" {
 }
 
 resource "azurerm_subnet" "dp_plsubnet" {
-  name                              = "${local.prefix}-dp-privatelink"
+  name                              = var.subnet_privatelink_name
   resource_group_name               = local.dp_rg_name
   virtual_network_name              = local.dp_vnet_name
   address_prefixes                  = [cidrsubnet(var.cidr_dp, 6, 2)]

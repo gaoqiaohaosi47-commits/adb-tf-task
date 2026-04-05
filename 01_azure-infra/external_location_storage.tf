@@ -15,7 +15,7 @@
 # ユーザー割り当てマネージドID
 #--------------------------------------------------------------
 resource "azurerm_user_assigned_identity" "external_location" {
-  name                = "${local.prefix}-ext-loc-identity"
+  name                = var.ext_loc_identity_name
   resource_group_name = local.dp_rg_name
   location            = local.dp_rg_location
   tags                = local.tags
@@ -26,7 +26,7 @@ resource "azurerm_user_assigned_identity" "external_location" {
 # - ユーザー割り当てマネージドIDを紐付け
 #--------------------------------------------------------------
 resource "azurerm_databricks_access_connector" "external_location" {
-  name                = "${local.prefix}-ext-loc-access-connector"
+  name                = var.ext_loc_access_connector_name
   resource_group_name = local.dp_rg_name
   location            = local.dp_rg_location
   tags                = local.tags
@@ -41,7 +41,7 @@ resource "azurerm_databricks_access_connector" "external_location" {
 # 外部ロケーション用ストレージアカウント (ADLS Gen2)
 #--------------------------------------------------------------
 resource "azurerm_storage_account" "external_location" {
-  name                     = "${replace(local.prefix, "-", "")}extloc"
+  name                     = var.ext_loc_storage_account_name
   resource_group_name      = local.dp_rg_name
   location                 = local.dp_rg_location
   account_tier             = "Standard"

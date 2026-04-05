@@ -5,14 +5,9 @@
 #--------------------------------------------------------------
 # 基本情報
 #--------------------------------------------------------------
-output "prefix" {
-  description = "各モジュール共通で使用するリソース名プレフィックス"
-  value       = local.prefix
-}
-
 output "dbfs_storage_account_name" {
   description = "Databricks DBFS ストレージアカウント名（02 でのワークスペース作成時に使用）"
-  value       = local.dbfsname
+  value       = var.dbfs_storage_account_name
 }
 
 output "resource_group_name" {

@@ -7,15 +7,26 @@
 # ==============================================================
 
 # --- 01_azure-infra outputs から転記 ---
-prefix                            = "tfdemo-xxxxxx"
-dbfs_storage_account_name         = "dbfsxxxxxx"
-resource_group_name               = "adb-dp-tfdemo-xxxxxx-rg"
+# outputs.dbfs_storage_account_name
+dbfs_storage_account_name         = "adbdbfsstorage"
+# outputs.resource_group_name
+resource_group_name               = "adb-dp-rg"
+# outputs.location
 location                          = "eastus"
+# outputs.vnet_id
 vnet_id                           = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX"
-public_subnet_name                = "tfdemo-xxxxxx-dp-public"
-private_subnet_name               = "tfdemo-xxxxxx-dp-private"
-public_subnet_nsg_association_id  = "/subscriptions/XXXX/.../subnets/tfdemo-xxxxxx-dp-public/providers/Microsoft.Network/networkSecurityGroups/.../associations/..."
-private_subnet_nsg_association_id = "/subscriptions/XXXX/.../subnets/tfdemo-xxxxxx-dp-private/providers/Microsoft.Network/networkSecurityGroups/.../associations/..."
+# outputs.public_subnet_name
+public_subnet_name                = "adb-dp-public"
+# outputs.private_subnet_name
+private_subnet_name               = "adb-dp-private"
+# outputs.public_subnet_nsg_association_id
+public_subnet_nsg_association_id  = "/subscriptions/XXXX/.../subnets/adb-dp-public/providers/Microsoft.Network/networkSecurityGroups/.../associations/..."
+# outputs.private_subnet_nsg_association_id
+private_subnet_nsg_association_id = "/subscriptions/XXXX/.../subnets/adb-dp-private/providers/Microsoft.Network/networkSecurityGroups/.../associations/..."
+
+# --- ワークスペース命名 ---
+workspace_name              = "adb-dp-workspace"
+managed_resource_group_name = "adb-dp-workspace-mrg"
 
 # --- ワークスペース設定 ---
 public_network_access_enabled = true

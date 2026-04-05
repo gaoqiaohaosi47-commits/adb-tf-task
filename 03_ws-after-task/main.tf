@@ -6,7 +6,6 @@ data "azurerm_client_config" "current" {}
 
 locals {
   # 01_azure-infra / 02_databricks-workspace の outputs から tfvars で受け取る
-  prefix         = var.prefix
   dbfsname       = var.dbfs_storage_account_name
   dp_rg_name     = var.resource_group_name
   dp_rg_location = var.location

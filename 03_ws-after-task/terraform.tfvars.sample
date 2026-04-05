@@ -8,23 +8,44 @@
 # ==============================================================
 
 # --- 01_azure-infra outputs から転記 ---
-prefix                       = "tfdemo-xxxxxx"
-resource_group_name          = "adb-dp-tfdemo-xxxxxx-rg"
+# outputs.resource_group_name
+resource_group_name          = "adb-dp-rg"
+# outputs.location
 location                     = "eastus"
+# outputs.vnet_id
 vnet_id                      = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX"
-privatelink_subnet_id        = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX/subnets/tfdemo-xxxxxx-dp-privatelink"
-dns_zone_resource_group_name = "adb-dp-tfdemo-xxxxxx-rg"  # DNS Zone が別 RG にある場合は変更
+# outputs.privatelink_subnet_id
+privatelink_subnet_id        = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/virtualNetworks/XXXX/subnets/adb-dp-privatelink"
+# DNS Zone が別 RG にある場合は変更
+dns_zone_resource_group_name = "adb-dp-rg"
+# outputs.dns_zone_dpcp_id
 dns_zone_dpcp_id             = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.azuredatabricks.net"
+# outputs.dns_zone_dpcp_name
 dns_zone_dpcp_name           = "privatelink.azuredatabricks.net"
+# outputs.dns_zone_dfs_id
 dns_zone_dfs_id              = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
+# outputs.dns_zone_dfs_name
 dns_zone_dfs_name            = "privatelink.dfs.core.windows.net"
+# outputs.dns_zone_blob_id
 dns_zone_blob_id             = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+# outputs.dns_zone_blob_name
 dns_zone_blob_name           = "privatelink.blob.core.windows.net"
 
 # --- 02_databricks-workspace outputs から転記 ---
+# outputs.workspace_resource_id
 workspace_resource_id      = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.Databricks/workspaces/XXXX"
+# outputs.managed_resource_group_id
 managed_resource_group_id  = "/subscriptions/XXXX/resourceGroups/databricks-rg-XXXX"
-dbfs_storage_account_name  = "dbfsxxxxxx"
+# outputs.dbfs_storage_account_name
+dbfs_storage_account_name  = "adbdbfsstorage"
+
+# --- リソース命名 ---
+dns_vnet_link_dpcp_name         = "ws-dpcp-vnetlink"
+dns_vnet_link_dfs_name          = "ws-dfs-vnetlink"
+dns_vnet_link_blob_name         = "ws-blob-vnetlink"
+backend_private_endpoint_name   = "adb-backend-pe"
+dbfs_dfs_private_endpoint_name  = "adb-dbfs-pe-dfs"
+dbfs_blob_private_endpoint_name = "adb-dbfs-pe-blob"
 
 # --- Azure 認証 ---
 subscription_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

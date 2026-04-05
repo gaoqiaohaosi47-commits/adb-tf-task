@@ -13,7 +13,7 @@ location = "eastus"
 cidr_dp = "10.10.0.0/16"
 
 # Data Plane 用 RG は Terraform で新規作成
-create_data_plane_resource_group = true
+create_data_plane_resource_group        = true
 existing_data_plane_resource_group_name = ""
 
 # （任意）Private サブネットに付与する Service Endpoint（必要なければ空配列のまま）
@@ -21,11 +21,49 @@ existing_data_plane_resource_group_name = ""
 private_subnet_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
 
 # 既存の VNet を使用するかどうか
-use_existing_vnet = false
-existing_vnet_name = ""
+use_existing_vnet                 = false
+existing_vnet_name                = ""
 existing_vnet_resource_group_name = ""
 
 # Private DNS Zones を作成するかどうか（複数環境で同じ RG を使用する場合 false）
 create_private_dns_zones = true
 
-subscription_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXX" 
+subscription_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+#############################################
+# リソース命名
+#############################################
+
+# --- リソースグループ ---
+data_plane_resource_group_name = "adb-dp-rg"
+
+# --- VNet / NSG ---
+vnet_name               = "adb-dp-vnet"
+nsg_name                = "adb-dp-nsg"
+nsg_rule_aad_name       = "AllowAAD"
+nsg_rule_frontdoor_name = "AllowAzureFrontDoor"
+
+# --- サブネット ---
+subnet_public_name      = "adb-dp-public"
+subnet_private_name     = "adb-dp-private"
+subnet_privatelink_name = "adb-dp-privatelink"
+
+# --- Private DNS Zone VNet リンク ---
+dns_vnet_link_dpcp_name = "dpcp-vnetlink"
+dns_vnet_link_dfs_name  = "dfs-vnetlink"
+dns_vnet_link_blob_name = "blob-vnetlink"
+
+# --- 外部ロケーション用リソース ---
+ext_loc_identity_name         = "adb-ext-loc-identity"
+ext_loc_access_connector_name = "adb-ext-loc-access-connector"
+# ストレージアカウント名: 英数字のみ・24文字以内
+ext_loc_storage_account_name  = "adbextlocstorage"
+ext_storage_container_name    = "external"
+# パブリックアクセス無効時のみ PE を作成
+ext_storage_public_access_enabled      = false
+ext_loc_private_endpoint_dfs_name  = "adb-ext-loc-pe-dfs"
+ext_loc_private_endpoint_blob_name = "adb-ext-loc-pe-blob"
+
+# --- DBFS ストレージ ---
+# ストレージアカウント名: 英数字のみ・24文字以内
+dbfs_storage_account_name = "adbdbfsstorage"
