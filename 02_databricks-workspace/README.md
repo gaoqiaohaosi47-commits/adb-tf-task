@@ -19,7 +19,8 @@ Databricks ワークスペースを作成する。この時点ではプライベ
 | `providers.tf` | Terraform / AzureRM プロバイダー設定 |
 | `main.tf` | ローカル値定義・タグ設定 |
 | `variables.tf` | 入力変数定義（01_azure-infra outputs を受け取る） |
-| `databricks_workspace.tf` | Databricks ワークスペース作成 |
+| `databricks_workspace.tf` | Databricks ワークスペース作成（CMK 有効化含む） |
+| `cmk.tf` | DBFS Root CMK・Managed Disk CMK のアクセスポリシーと CMK 紐付け |
 | `outputs.tf` | ワークスペース情報の出力 |
 | `terraform.tfvars.sample` | 変数設定サンプル |
 
@@ -27,7 +28,8 @@ Databricks ワークスペースを作成する。この時点ではプライベ
 
 | 変数名 | 必須 | 説明 |
 |---|---|---|
-| `prefix` | ✓ | `01 output: prefix` |
+| `workspace_name` | ✓ | Databricks ワークスペース名 |
+| `managed_resource_group_name` | ✓ | Databricks マネージドリソースグループ名 |
 | `dbfs_storage_account_name` | ✓ | `01 output: dbfs_storage_account_name` |
 | `resource_group_name` | ✓ | `01 output: resource_group_name` |
 | `location` | ✓ | `01 output: location` |
@@ -38,6 +40,9 @@ Databricks ワークスペースを作成する。この時点ではプライベ
 | `private_subnet_nsg_association_id` | ✓ | `01 output: private_subnet_nsg_association_id` |
 | `subscription_id` | ✓ | Azure サブスクリプション ID |
 | `public_network_access_enabled` | - | パブリックアクセス許可（デフォルト: true） |
+| `cmk_key_vault_id` | ✓ | `01 output: cmk_key_vault_id` |
+| `cmk_key_vault_key_id` | ✓ | `01 output: cmk_key_vault_key_id` |
+| `enable_managed_disk_cmk` | - | Managed Disk CMK 有効化フラグ（デフォルト: false、2回目 apply で true に変更） |
 
 ## 出力一覧
 
@@ -61,6 +66,7 @@ cd ../02_databricks-workspace
 # 2. 変数ファイルを準備（01 の output 値を転記）
 cp terraform.tfvars.sample terraform.tfvars
 # terraform.tfvars を編集して実際の値を設定
+# ※ enable_managed_disk_cmk は false のままにする
 
 # 3. 初期化
 terraform init
@@ -68,9 +74,17 @@ terraform init
 # 4. 実行計画の確認
 terraform plan
 
-# 5. 適用
+# 5. 適用（1回目）
+# ワークスペース作成・DBFS CMK・Managed Services CMK が完了する
+# AzureDatabricks SP へのポリシーは 01_azure-infra apply 済みのため 1回で完結
 terraform apply
 
-# 6. 後続モジュール用に出力値を記録
+# 6. Managed Disk CMK を有効化（terraform.tfvars を編集）
+# enable_managed_disk_cmk = true に変更
+
+# 7. 適用（2回目）— Managed Disk CMK 設定
+terraform apply
+
+# 8. 後続モジュール用に出力値を記録
 terraform output
 ```

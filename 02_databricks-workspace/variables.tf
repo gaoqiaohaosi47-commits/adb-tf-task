@@ -68,3 +68,22 @@ variable "subscription_id" {
   type        = string
   description = "Azure サブスクリプション ID"
 }
+
+#--------------------------------------------------------------
+# CMK（Customer Managed Key）設定
+#--------------------------------------------------------------
+variable "cmk_key_vault_id" {
+  type        = string
+  description = "01_azure-infra の outputs.cmk_key_vault_id（CMK 用 Key Vault ID）"
+}
+
+variable "cmk_key_vault_key_id" {
+  type        = string
+  description = "01_azure-infra の outputs.cmk_key_vault_key_id（CMK 用キー ID）"
+}
+
+variable "enable_managed_disk_cmk" {
+  type        = bool
+  description = "Managed Disk CMK を有効化するか（ワークスペース初回作成後に true に変更して 2回目 apply）"
+  default     = false
+}

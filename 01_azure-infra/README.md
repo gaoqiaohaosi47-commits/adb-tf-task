@@ -15,15 +15,17 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 
 | ファイル | 役割 |
 |---|---|
-| `providers.tf` | Terraform / AzureRM プロバイダー設定 |
+| `providers.tf` | Terraform / AzureRM / AzureAD プロバイダー設定 |
 | `main.tf` | ローカル値定義・リソースグループ作成 |
-| `variables.tf` | ネットワーク・RG 関連の変数定義 |
+| `variables.tf` | ネットワーク・RG・CMK 関連の変数定義 |
 | `external_location_variables.tf` | 外部ロケーション用ストレージ変数定義 |
 | `vnet_dp.tf` | VNet・サブネット・NSG の作成 |
 | `private_dns_zone_dp.tf` | Private DNS Zone の作成（または既存参照）と VNet リンク |
 | `external_location_storage.tf` | 外部ロケーション用ストレージ・マネージド ID・アクセスコネクタの作成 |
 | `external_location_private_endpoint.tf` | 外部ロケーション用ストレージのプライベートエンドポイント作成 |
-| `outputs.tf` | 基本情報・ネットワーク情報・DNS Zone 情報の出力 |
+| `cmk_key_vault.tf` | CMK 用 Key Vault・RSA キー・AzureDatabricks SP アクセスポリシーの作成 |
+| `cmk_ext_loc_storage.tf` | 外部ロケーション Storage への CMK 適用 |
+| `outputs.tf` | 基本情報・ネットワーク情報・DNS Zone 情報・CMK 情報の出力 |
 | `external_location_outputs.tf` | 外部ロケーション関連リソースの出力 |
 | `terraform.tfvars.sample` | 変数設定サンプル |
 
@@ -43,6 +45,8 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 | `private_subnet_endpoints` | - | private サブネットに付与する Service Endpoint リスト |
 | `ext_storage_container_name` | - | 外部ロケーション用コンテナ名（デフォルト: `external`） |
 | `ext_storage_public_access_enabled` | - | 外部ロケーション用ストレージへのパブリックアクセス許可（デフォルト: false） |
+| `key_vault_name` | ✓ | CMK 用 Key Vault 名（英数字とハイフン・3〜24文字・グローバル一意） |
+| `cmk_key_name` | - | CMK 用 RSA キー名（デフォルト: `databricks-cmk`） |
 
 ## 出力一覧
 
@@ -69,6 +73,8 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 | `ext_loc_managed_identity_id` | ユーザー割り当てマネージド ID のリソース ID |
 | `ext_loc_access_connector_id` | Databricks アクセスコネクタのリソース ID |
 | `ext_loc_access_connector_name` | Databricks アクセスコネクタ名 |
+| `cmk_key_vault_id` | CMK 用 Key Vault ID（02 へ引き渡し） |
+| `cmk_key_vault_key_id` | CMK 用 Key Vault キー ID（02 へ引き渡し） |
 
 ## 実行手順
 

@@ -58,6 +58,10 @@ resource "azurerm_storage_account" "external_location" {
     default_action = var.ext_storage_public_access_enabled ? "Allow" : "Deny"
     bypass         = ["AzureServices"]
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
 #--------------------------------------------------------------

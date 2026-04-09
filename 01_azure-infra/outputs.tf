@@ -90,3 +90,16 @@ output "dns_zone_blob_name" {
   description = "privatelink.blob.core.windows.net DNS Zone 名"
   value       = local.dns_zone_blob_name
 }
+
+#--------------------------------------------------------------
+# CMK 情報（02 への引き渡し用）
+#--------------------------------------------------------------
+output "cmk_key_vault_id" {
+  description = "CMK 用 Key Vault ID"
+  value       = azurerm_key_vault.cmk.id
+}
+
+output "cmk_key_vault_key_id" {
+  description = "CMK 用 Key Vault キー ID"
+  value       = azurerm_key_vault_key.cmk.id
+}

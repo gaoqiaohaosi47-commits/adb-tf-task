@@ -163,3 +163,17 @@ variable "create_private_dns_zones" {
   default     = true
 }
 
+#--------------------------------------------------------------
+# CMK（Customer Managed Key）設定
+#--------------------------------------------------------------
+variable "key_vault_name" {
+  type        = string
+  description = "CMK 用 Key Vault 名（英数字とハイフン、3〜24文字）"
+  default     = "databricks-cmk-kv"
+}
+
+variable "cmk_key_name" {
+  type        = string
+  description = "CMK 用 Key Vault キー名"
+  default     = "databricks-cmk"
+}

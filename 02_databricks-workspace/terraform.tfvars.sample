@@ -31,3 +31,21 @@ managed_resource_group_name = "adb-dp-workspace-mrg"
 # --- ワークスペース設定 ---
 public_network_access_enabled = true
 subscription_id               = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# --- CMK（Customer Managed Key）設定 ---
+# ※ 以下の値は 01_azure-infra の apply 後に取得してください
+#   cd ../01_azure-infra && terraform output cmk_key_vault_id
+#   cd ../01_azure-infra && terraform output cmk_key_vault_key_id
+#
+# AzureDatabricks SP への Key Vault ポリシーは 01_azure-infra で適用済みのため、
+# このモジュールの apply は通常 1回で完了します（Managed Disk CMK を除く）。
+#
+# outputs.cmk_key_vault_id
+cmk_key_vault_id     = "/subscriptions/XXXX/resourceGroups/XXXX/providers/Microsoft.KeyVault/vaults/XXXX"
+# outputs.cmk_key_vault_key_id
+cmk_key_vault_key_id = "https://XXXX.vault.azure.net/keys/databricks-cmk/XXXX"
+
+# Managed Disk CMK のみ 2-step apply が必要（Azure API の設計上の制約）:
+#   Step 1: false のまま apply → ワークスペース作成・DBFS/Managed Services CMK 設定完了
+#   Step 2: true に変更して apply → Managed Disk CMK 設定
+enable_managed_disk_cmk = false

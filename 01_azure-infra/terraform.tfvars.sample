@@ -67,3 +67,13 @@ ext_loc_private_endpoint_blob_name = "adb-ext-loc-pe-blob"
 # --- DBFS ストレージ ---
 # ストレージアカウント名: 英数字のみ・24文字以内
 dbfs_storage_account_name = "adbdbfsstorage"
+
+#############################################
+# CMK（Customer Managed Key）設定
+#############################################
+
+# Key Vault 名: 英数字とハイフン・3〜24文字・グローバル一意
+key_vault_name = "adb-cmk-kv"
+
+# Key Vault 内の CMK キー名
+cmk_key_name = "databricks-cmk"

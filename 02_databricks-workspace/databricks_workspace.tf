@@ -20,7 +20,10 @@ resource "azurerm_databricks_workspace" "dp_workspace" {
   tags                                  = local.tags
   public_network_access_enabled         = var.public_network_access_enabled
   network_security_group_rules_required = "NoAzureDatabricksRules"
-  customer_managed_key_enabled          = false
+  customer_managed_key_enabled          = true
+  managed_services_cmk_key_vault_key_id = var.cmk_key_vault_key_id
+  managed_disk_cmk_key_vault_key_id                   = var.enable_managed_disk_cmk ? var.cmk_key_vault_key_id : null
+  managed_disk_cmk_rotation_to_latest_version_enabled = var.enable_managed_disk_cmk ? true : null
 
   custom_parameters {
     virtual_network_id                                   = var.vnet_id
@@ -30,4 +33,5 @@ resource "azurerm_databricks_workspace" "dp_workspace" {
     private_subnet_network_security_group_association_id = var.private_subnet_nsg_association_id
     storage_account_name                                 = local.dbfsname
   }
+
 }
