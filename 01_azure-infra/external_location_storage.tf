@@ -60,7 +60,8 @@ resource "azurerm_storage_account" "external_location" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.cmk.id]
   }
 }
 

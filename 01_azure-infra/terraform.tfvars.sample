@@ -77,3 +77,17 @@ key_vault_name = "adb-cmk-kv"
 
 # Key Vault 内の CMK キー名
 cmk_key_name = "databricks-cmk"
+
+# CMK 専用ユーザー割り当てマネージドID 名
+cmk_identity_name = "adb-cmk-identity"
+
+# Key Vault プライベートエンドポイント名
+key_vault_private_endpoint_name = "adb-cmk-kv-pe"
+
+# privatelink.vaultcore.azure.net DNS Zone の VNet リンク名
+dns_vnet_link_kv_name = "kv-vnetlink"
+
+# terraform apply 実行環境のパブリック IP（ローカル PC から apply する場合に設定）
+# 確認方法: curl -s https://api.ipify.org
+# Azure 内部ネットワーク（VPN・Bastion 等）から実行する場合は空文字のままでよい
+# terraform_operator_ip = "203.0.113.45"

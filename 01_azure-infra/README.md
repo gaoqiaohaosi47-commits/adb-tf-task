@@ -23,8 +23,9 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 | `private_dns_zone_dp.tf` | Private DNS Zone の作成（または既存参照）と VNet リンク |
 | `external_location_storage.tf` | 外部ロケーション用ストレージ・マネージド ID・アクセスコネクタの作成 |
 | `external_location_private_endpoint.tf` | 外部ロケーション用ストレージのプライベートエンドポイント作成 |
-| `cmk_key_vault.tf` | CMK 用 Key Vault・RSA キー・AzureDatabricks SP アクセスポリシーの作成 |
-| `cmk_ext_loc_storage.tf` | 外部ロケーション Storage への CMK 適用 |
+| `cmk_key_vault.tf` | CMK 専用ユーザー割り当てID・Key Vault・RSA キー・アクセスポリシーの作成 |
+| `cmk_key_vault_private_endpoint.tf` | Key Vault プライベートエンドポイント・DNS Zone の作成 |
+| `cmk_ext_loc_storage.tf` | 外部ロケーション Storage への CMK 適用（ユーザー割り当てID 使用） |
 | `outputs.tf` | 基本情報・ネットワーク情報・DNS Zone 情報・CMK 情報の出力 |
 | `external_location_outputs.tf` | 外部ロケーション関連リソースの出力 |
 | `terraform.tfvars.sample` | 変数設定サンプル |
@@ -47,6 +48,9 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 | `ext_storage_public_access_enabled` | - | 外部ロケーション用ストレージへのパブリックアクセス許可（デフォルト: false） |
 | `key_vault_name` | ✓ | CMK 用 Key Vault 名（英数字とハイフン・3〜24文字・グローバル一意） |
 | `cmk_key_name` | - | CMK 用 RSA キー名（デフォルト: `databricks-cmk`） |
+| `cmk_identity_name` | - | CMK 専用ユーザー割り当てマネージドID 名（デフォルト: `cmk-identity`） |
+| `key_vault_private_endpoint_name` | - | Key Vault プライベートエンドポイント名（デフォルト: `cmk-kv-pe`） |
+| `dns_vnet_link_kv_name` | - | `privatelink.vaultcore.azure.net` DNS Zone の VNet リンク名（デフォルト: `kv-vnetlink`） |
 
 ## 出力一覧
 
@@ -97,3 +101,33 @@ terraform apply
 # 5. 後続モジュール用に出力値を記録
 terraform output
 ```
+
+## ローカル PC から terraform apply を実行する場合の注意
+
+CMK 用 Key Vault は `public_network_access_enabled = false`（プライベートエンドポイントのみ）で作成される。
+ローカル PC から `terraform apply` を実行する際は、実行環境のパブリック IP を Key Vault のネットワーク許可リストに追加する必要がある。
+
+### 手順
+
+**1. 自分のパブリック IP を確認**
+
+```bash
+curl -s https://api.ipify.org
+# 例: 203.0.113.45
+```
+
+**2. `terraform.tfvars` に追記**
+
+```hcl
+terraform_operator_ip = "203.0.113.45"
+```
+
+**3. そのまま `terraform apply` を実行**
+
+`cmk_key_vault.tf` の `network_acls.ip_rules` にこの IP が自動的に追加され、apply 中の Key Vault へのアクセスが許可される。
+
+### 補足
+
+- `terraform_operator_ip` を空文字列（デフォルト）のままにすると `ip_rules` は設定されない（PE 内部ネットワークからの実行を想定）
+- IP が変わった場合は `terraform.tfvars` を更新して再 apply する
+- `network_acls.bypass = ["AzureServices"]` により Azure サービス（Storage 等）からのアクセスは IP 設定に関係なく常に許可される

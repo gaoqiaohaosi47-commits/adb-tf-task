@@ -177,3 +177,27 @@ variable "cmk_key_name" {
   description = "CMK 用 Key Vault キー名"
   default     = "databricks-cmk"
 }
+
+variable "cmk_identity_name" {
+  type        = string
+  description = "CMK 専用ユーザー割り当てマネージドID 名"
+  default     = "cmk-identity"
+}
+
+variable "key_vault_private_endpoint_name" {
+  type        = string
+  description = "CMK Key Vault プライベートエンドポイント名"
+  default     = "cmk-kv-pe"
+}
+
+variable "dns_vnet_link_kv_name" {
+  type        = string
+  description = "privatelink.vaultcore.azure.net DNS Zone の VNet リンク名"
+  default     = "kv-vnetlink"
+}
+
+variable "terraform_operator_ip" {
+  type        = string
+  description = "terraform apply 実行環境のパブリック IP（Key Vault ネットワーク許可リスト用）。空文字の場合は ip_rules を設定しない"
+  default     = ""
+}
