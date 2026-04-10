@@ -87,3 +87,30 @@ resource "databricks_entitlements" "ws_admins" {
     databricks_mws_permission_assignment.ws_admins
   ]
 }
+
+
+# Group Manager ロールの付与（グループのメンバーシップ管理権限）
+resource "databricks_access_control_rule_set" "group_manager" {
+  provider =  databricks.account
+  name = "accounts/${var.databricks_account_id}/groups/${databricks_group.uc_users.id}/ruleSets/default"
+
+  grant_rules {
+    role       = "roles/group.manager"
+    principals = [
+      "groups/${databricks_group.ws_admins.acl_principal_id}"
+    ]
+  }
+}
+
+# Group Manager ロールの付与（グループのメンバーシップ管理権限）
+resource "databricks_access_control_rule_set" "group_manager" {
+  provider =  databricks.account
+  name = "accounts/${var.databricks_account_id}/groups/${databricks_group.ws_admins.id}/ruleSets/default"
+
+  grant_rules {
+    role       = "roles/group.manager"
+    principals = [
+      "groups/${databricks_group.ws_admins.acl_principal_id}"
+    ]
+  }
+}
