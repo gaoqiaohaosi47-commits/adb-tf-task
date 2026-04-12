@@ -68,23 +68,31 @@ cp terraform.tfvars.sample terraform.tfvars
 # terraform.tfvars を編集して実際の値を設定
 # ※ enable_managed_disk_cmk は false のままにする
 
-# 3. 初期化
-terraform init
+# 3. バックエンド設定ファイルを準備
+cp backend.tfbackend.sample backend.tfbackend
+# backend.tfbackend を編集して tfstate 保管先のストレージアカウント情報を設定
+#   resource_group_name  = "tfstate を保管する RG 名"
+#   storage_account_name = "tfstate を保管するストレージアカウント名"
+#   container_name       = "tfstate"  # コンテナ名（変更する場合のみ）
+#   key                  = "02_databricks-workspace/terraform.tfstate"  # 変更不要
 
-# 4. 実行計画の確認
+# 4. 初期化（リモートバックエンドを指定）
+terraform init -backend-config=backend.tfbackend
+
+# 5. 実行計画の確認
 terraform plan
 
-# 5. 適用（1回目）
+# 6. 適用（1回目）
 # ワークスペース作成・DBFS CMK・Managed Services CMK が完了する
 # AzureDatabricks SP へのポリシーは 01_azure-infra apply 済みのため 1回で完結
 terraform apply
 
-# 6. Managed Disk CMK を有効化（terraform.tfvars を編集）
+# 7. Managed Disk CMK を有効化（terraform.tfvars を編集）
 # enable_managed_disk_cmk = true に変更
 
-# 7. 適用（2回目）— Managed Disk CMK 設定
+# 8. 適用（2回目）— Managed Disk CMK 設定
 terraform apply
 
-# 8. 後続モジュール用に出力値を記録
+# 9. 後続モジュール用に出力値を記録
 terraform output
 ```

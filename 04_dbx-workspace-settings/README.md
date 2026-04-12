@@ -129,13 +129,21 @@ az account set --subscription <subscription_id>
 cp terraform.tfvars.sample terraform.tfvars
 # terraform.tfvars を編集して実際の値を設定
 
-# 4. 初期化
-terraform init
+# 4. バックエンド設定ファイルを準備
+cp backend.tfbackend.sample backend.tfbackend
+# backend.tfbackend を編集して tfstate 保管先のストレージアカウント情報を設定
+#   resource_group_name  = "tfstate を保管する RG 名"
+#   storage_account_name = "tfstate を保管するストレージアカウント名"
+#   container_name       = "tfstate"  # コンテナ名（変更する場合のみ）
+#   key                  = "04_dbx-workspace-settings/terraform.tfstate"  # 変更不要
 
-# 5. 実行計画の確認
+# 5. 初期化（リモートバックエンドを指定）
+terraform init -backend-config=backend.tfbackend
+
+# 6. 実行計画の確認
 terraform plan
 
-# 6. 適用
+# 7. 適用
 terraform apply
 ```
 

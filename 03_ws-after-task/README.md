@@ -68,12 +68,20 @@ cd ../03_ws-after-task
 cp terraform.tfvars.sample terraform.tfvars
 # terraform.tfvars を編集して実際の値を設定
 
-# 3. 初期化
-terraform init
+# 3. バックエンド設定ファイルを準備
+cp backend.tfbackend.sample backend.tfbackend
+# backend.tfbackend を編集して tfstate 保管先のストレージアカウント情報を設定
+#   resource_group_name  = "tfstate を保管する RG 名"
+#   storage_account_name = "tfstate を保管するストレージアカウント名"
+#   container_name       = "tfstate"  # コンテナ名（変更する場合のみ）
+#   key                  = "03_ws-after-task/terraform.tfstate"  # 変更不要
 
-# 4. 実行計画の確認
+# 4. 初期化（リモートバックエンドを指定）
+terraform init -backend-config=backend.tfbackend
+
+# 5. 実行計画の確認
 terraform plan
 
-# 5. 適用
+# 6. 適用
 terraform apply
 ```

@@ -1,0 +1,20 @@
+# ==============================================================
+# Terraform リモートバックエンド設定（Azure Blob Storage）
+#
+# 使い方:
+#   1. このファイルをコピー: cp backend.tfbackend.sample backend.tfbackend
+#   2. 各値を実際のリソース情報に書き換える
+#   3. 初期化: terraform init -backend-config=backend.tfbackend
+# ==============================================================
+
+# tfstate を保管するストレージアカウントのリソースグループ名
+resource_group_name = "XXXX"
+
+# tfstate を保管するストレージアカウント名
+storage_account_name = "XXXX"
+
+# tfstate を保管する Blob コンテナ名
+container_name = "tfstate"
+
+# このモジュールの tfstate ファイルパス（他モジュールと重複しないこと）
+key = "03_ws-after-task/terraform.tfstate"
