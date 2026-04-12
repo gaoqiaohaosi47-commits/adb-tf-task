@@ -95,11 +95,6 @@ variable "ext_loc_private_endpoint_blob_name" {
   default     = "ext-loc-pe-blob"
 }
 
-variable "dbfs_storage_account_name" {
-  type        = string
-  description = "Databricks DBFS ストレージアカウント名（英数字のみ、24文字以内）"
-}
-
 #--------------------------------------------------------------
 # ネットワーク・リソースグループ
 #--------------------------------------------------------------

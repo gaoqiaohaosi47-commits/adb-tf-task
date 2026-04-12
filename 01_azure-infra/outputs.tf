@@ -5,11 +5,6 @@
 #--------------------------------------------------------------
 # 基本情報
 #--------------------------------------------------------------
-output "dbfs_storage_account_name" {
-  description = "Databricks DBFS ストレージアカウント名（02 でのワークスペース作成時に使用）"
-  value       = var.dbfs_storage_account_name
-}
-
 output "resource_group_name" {
   description = "Data Plane リソースグループ名"
   value       = local.dp_rg_name

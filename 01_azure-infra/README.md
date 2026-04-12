@@ -57,7 +57,6 @@ VNet・NSG・Private DNS Zone・外部ロケーション用ストレージ等の
 | 出力名 | 説明 |
 |---|---|
 | `prefix` | リソース名プレフィックス（02/03/04 で使用） |
-| `dbfs_storage_account_name` | DBFS ストレージアカウント名 |
 | `resource_group_name` | Data Plane リソースグループ名 |
 | `location` | デプロイリージョン |
 | `vnet_id` | Data Plane VNet ID |

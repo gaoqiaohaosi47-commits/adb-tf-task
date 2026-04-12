@@ -7,8 +7,6 @@
 # ==============================================================
 
 # --- 01_azure-infra outputs から転記 ---
-# outputs.dbfs_storage_account_name
-dbfs_storage_account_name         = "adbdbfsstorage"
 # outputs.resource_group_name
 resource_group_name               = "adb-dp-rg"
 # outputs.location

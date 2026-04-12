@@ -64,10 +64,6 @@ ext_storage_public_access_enabled      = false
 ext_loc_private_endpoint_dfs_name  = "adb-ext-loc-pe-dfs"
 ext_loc_private_endpoint_blob_name = "adb-ext-loc-pe-blob"
 
-# --- DBFS ストレージ ---
-# ストレージアカウント名: 英数字のみ・24文字以内
-dbfs_storage_account_name = "adbdbfsstorage"
-
 #############################################
 # CMK（Customer Managed Key）設定
 #############################################

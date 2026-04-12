@@ -15,11 +15,6 @@ variable "managed_resource_group_name" {
   description = "Databricks マネージドリソースグループ名"
 }
 
-variable "dbfs_storage_account_name" {
-  type        = string
-  description = "01_azure-infra の outputs.dbfs_storage_account_name（DBFS ストレージアカウント名）"
-}
-
 variable "resource_group_name" {
   type        = string
   description = "01_azure-infra の outputs.resource_group_name（Data Plane RG 名）"

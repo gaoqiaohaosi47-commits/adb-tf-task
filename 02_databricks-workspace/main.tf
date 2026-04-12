@@ -9,9 +9,15 @@ data "external" "me" {
   program = ["az", "account", "show", "--query", "user"]
 }
 
+# DBFS ストレージアカウント名用ランダムサフィックス（Azure Portal と同形式: dbstorage + 12文字）
+resource "random_string" "dbfs_suffix" {
+  length  = 12
+  upper   = false
+  special = false
+}
+
 locals {
-  # 01_azure-infra の outputs から tfvars で受け取る
-  dbfsname = var.dbfs_storage_account_name
+  dbfsname = "dbstorage${random_string.dbfs_suffix.result}"
 
   tags = {
     Environment = "Testing"
